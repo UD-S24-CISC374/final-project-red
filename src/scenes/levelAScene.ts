@@ -17,7 +17,7 @@ export default class LevelAScene extends Phaser.Scene {
         // Wizard Movement: 
         this.anims.create({
             key: "left",
-            frames: this.anims.generateFrameNumbers("dude", {
+            frames: this.anims.generateFrameNumbers("wizard", {
                 start: 0, end: 3
             }),
             frameRate: 10,
@@ -26,18 +26,21 @@ export default class LevelAScene extends Phaser.Scene {
 
         this.anims.create({
             key: "turn",
-            frames: [{ key: "dude", frame: 4}],
+            frames: [{ key: "wizard", frame: 4}],
             frameRate: 20
         })
 
         this.anims.create({
             key: "right", 
-            frames: this.anims.generateFrameNumbers("dude", {
+            frames: this.anims.generateFrameNumbers("wizard", {
                 start: 5, end: 8
             }),
             frameRate: 10,
             repeat: -1
         })
+
+        this.cursors = this.input.keyboard?.createCursorKeys();
+
     }
 
     update(){
