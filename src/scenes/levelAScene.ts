@@ -26,7 +26,7 @@ export default class LevelAScene extends Phaser.Scene {
 
         this.anims.create({
             key: "turn",
-            frames: [{ key: "wizard", frame: 4}],
+            frames: [{ key: "wizard", frame: 0}],
             frameRate: 20
         })
 
@@ -56,8 +56,19 @@ export default class LevelAScene extends Phaser.Scene {
             this.player?.setVelocityX(160);
             this.player?.anims.play("right", true);
         }
+        else if (this.cursors.up.isDown)
+        {
+            this.player?.setVelocityY(-160);
+            this.player?.anims.play("turn", true);
+        }
+        else if (this.cursors.down.isDown)
+        {
+            this.player?.setVelocityY(160);
+            this.player?.anims.play("turn", true);
+        }
         else {
             this.player?.setVelocityX(0);
+            this.player?.setVelocityY(0);
             this.player?.anims.play("turn");
         }
 
