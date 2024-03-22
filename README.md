@@ -12,3 +12,5 @@ Players navigate a dungeon as a wizard, and they can interact with NPCs to learn
 Start Background - Creator: YUCALORA | Credit: YUCALORA // Shutterstock www.shutterstock.com%2Fsearch%2Fdungeon-dark%3Fimage_type%3Dvector&psig=AOvVaw1S-w0NzaIssc8GQBIsGlsY&ust=1711209398231000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCe8POdiIUDFQAAAAAdAAAAABAI
 
 Start Button - Adobe Stock Photos https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Dstart%2Bbutton%2Bgame&psig=AOvVaw1j3fjEfqUI7eO-EV9jOzXV&ust=1711210529046000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCP_Y6iiIUDFQAAAAAdAAAAABAE
+
+Wizard Spritesheet: https://zys37.itch.io/wizard-fantasy-character-spritesheet
