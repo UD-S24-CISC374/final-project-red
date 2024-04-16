@@ -19,8 +19,11 @@ export default class GameScene extends Phaser.Scene {
     private lsTutorial: boolean = false; 
     private cdTutorial: boolean = false;
     private curDir?: string = "";
-    private catTut: boolean = false; 
+    private cdBackTut: boolean = false; 
     private instructionDialogue?: Phaser.GameObjects.Text;
+    private cdLsTut: boolean = false; 
+    private foundFile: boolean = false;
+    private won: boolean = false;
 
     constructor() {
         super({ key: "GameScene" });
@@ -183,11 +186,25 @@ export default class GameScene extends Phaser.Scene {
             if (this.cdTutorial) {
                 this.roboDialogue?.setText("cd lets you navigate filesystems and move around to different directories.\nNow, try using the spell you just learned to list everything in here!")
             }
-            if (this.catTut) {
-                this.roboDialogue?.setText("Next, type cd enemy if you think you're ready to take on that mage!");
+            if (this.cdLsTut) {
+                this.roboDialogue?.setText("Nice, here's everything inside the aboutMe folder.\nTo go back to the previous directory, do 'cd .'");
             }
-        } else {
-            this.roboDialogue?.setText("Quickly! type ls to defeat him!");
+            if (this.cdBackTut) {
+                this.roboDialogue?.setText("Great - we'll learn more later!\nYou are ready to take on your first enemy! Type 'cd enemy'");
+            }
+        }
+
+        if (this.fighting) {
+            if (!this.foundFile) {
+                this.roboDialogue?.setText("There is a file somewhere that will disable the mage.\nIt might be hidden, so use ls and cd to find it.");
+            }
+            if (this.foundFile) {
+                this.roboDialogue?.setText("You found it! Type selfDestruct.sh to defeat the mage!");
+            }
+            if (this.won) {
+                this.roboDialogue?.setText("You beat the evil mage! Now you can explore past him!");
+                this.fighting = false;
+            }
         }
     };
 
@@ -197,30 +214,83 @@ export default class GameScene extends Phaser.Scene {
     };
 
     handleConsoleText = (text: string) => {
-        if (text === "$> ls" && this.curDir === "") {
-            this.consoleDialogue?.setText("aboutMe dungeon.txt");
-            this.lsTutorial = true;
-        }
-        if (text === "$> cd aboutMe") {
-            this.consoleDialogue?.setText("aboutMe:");
-            this.curDir = "aboutMe";
-            this.cdTutorial = true;
-        }
-        if (text === "$> ls" && this.curDir === "aboutMe") {
-            this.consoleDialogue?.setText("aboutMe: secret.txt");
-            this.catTut = true;
-        }
-        if (text === "$> cd enemy") {
-            this.wizard?.setX(300);
-            this.wizard?.setY(400);
-            this.robo?.setX(201);
-            this.robo?.setY(400);
-            this.fighting = true;
-            this.consoleDialogue?.setText("");
-            this.terminalManager = new TerminalManager(
-                this.eventEmitter,
-                this.fighting
-            );
+        if (!this.fighting) {
+            if (text === "$> ls" && this.curDir === "") {
+                this.consoleDialogue?.setText("aboutMe dungeon.txt");
+                this.lsTutorial = true;
+            }
+            if (text === "$> cd aboutMe") {
+                this.consoleDialogue?.setText("aboutMe:");
+                this.curDir = "aboutMe";
+                this.cdTutorial = true;
+            }
+            if (text === "$> ls" && this.curDir === "aboutMe") {
+                this.consoleDialogue?.setText("aboutMe: secret.txt");
+                this.cdLsTut = true;
+            }
+            if (text === "$> cd ." && this.curDir === "aboutMe") {
+                this.consoleDialogue?.setText("");
+                this.cdBackTut = true;
+            } 
+            if (text === "$> cd enemy") {
+                this.wizard?.setX(300);
+                this.wizard?.setY(400);
+                this.robo?.setX(201);
+                this.robo?.setY(400);
+                this.fighting = true;
+                this.curDir = "enemy";
+                this.consoleDialogue?.setText("Enemy:");
+                this.terminalManager = new TerminalManager(
+                    this.eventEmitter,
+                    this.fighting
+                );
+            }
+        } else {
+            if (this.curDir==="enemy") {
+                // enemy home directory
+                if (text === "$> ls") {
+                    this.consoleDialogue?.setText("Enemy: evilStuff  evilThings evil.txt")
+                }
+                if (text === "$> cd evilStuff") {
+                    this.curDir = "evilStuff";
+                    this.consoleDialogue?.setText("evilStuff:");
+                }
+                if (text === "$> cd evilThings") {
+                    this.curDir = "evilThings"; 
+                    this.consoleDialogue?.setText("evilThings:");
+                }
+            }
+            if (this.curDir==="evilStuff") {
+                if (text === "$> ls") {
+                    this.consoleDialogue?.setText("evilStuff: notHere.txt mage.txt")
+                }
+                if (text === "$> cd .") {
+                    this.curDir = "enemy";
+                    this.consoleDialogue?.setText("enemy:");
+                }
+            }
+            if (this.curDir === "evilThings") {
+                if (text === "$> ls") {
+                    this.consoleDialogue?.setText("evilStuff: doNotLook")
+                }
+                if (text === "$> cd doNotLook") {
+                    this.curDir = "doNotLook";
+                    this.consoleDialogue?.setText("doNotLook:")
+                }
+                if (text === "$> cd .") {
+                    this.curDir = "enemy";
+                    this.consoleDialogue?.setText("enemy:");
+                }
+            }
+            if (this.curDir === "doNotLook") {
+                if (text === "$> ls") {
+                    this.consoleDialogue?.setText("doNotLook: selfDestruct.sh")
+                    this.foundFile = true;
+                }
+                if (text === "$> selfDestruct.sh") {
+                    this.won = true;
+                }
+            }
         }
     };
 
