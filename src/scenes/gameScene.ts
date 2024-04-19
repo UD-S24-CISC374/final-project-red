@@ -187,7 +187,7 @@ export default class GameScene extends Phaser.Scene {
                 this.roboDialogue?.setText("cd lets you navigate filesystems and move around to different directories.\nNow, try using the spell you just learned to list everything in here!")
             }
             if (this.cdLsTut) {
-                this.roboDialogue?.setText("Nice, here's everything inside the aboutMe folder.\nTo go back to the previous directory, do 'cd .'");
+                this.roboDialogue?.setText("Nice, here's everything inside the aboutMe folder.\nTo go back to the previous directory, do 'cd ..'");
             }
             if (this.cdBackTut) {
                 this.roboDialogue?.setText("Great - we'll learn more later!\nYou are ready to take on your first enemy! Type 'cd enemy'");
@@ -228,7 +228,7 @@ export default class GameScene extends Phaser.Scene {
                 this.consoleDialogue?.setText("aboutMe: secret.txt");
                 this.cdLsTut = true;
             }
-            if (text === "$> cd ." && this.curDir === "aboutMe") {
+            if (text === "$> cd .." && this.curDir === "aboutMe") {
                 this.consoleDialogue?.setText("");
                 this.cdBackTut = true;
             } 
@@ -264,7 +264,7 @@ export default class GameScene extends Phaser.Scene {
                 if (text === "$> ls") {
                     this.consoleDialogue?.setText("evilStuff: notHere.txt mage.txt")
                 }
-                if (text === "$> cd .") {
+                if (text === "$> cd ..") {
                     this.curDir = "enemy";
                     this.consoleDialogue?.setText("enemy:");
                 }
@@ -277,7 +277,7 @@ export default class GameScene extends Phaser.Scene {
                     this.curDir = "doNotLook";
                     this.consoleDialogue?.setText("doNotLook:")
                 }
-                if (text === "$> cd .") {
+                if (text === "$> cd ..") {
                     this.curDir = "enemy";
                     this.consoleDialogue?.setText("enemy:");
                 }
