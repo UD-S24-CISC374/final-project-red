@@ -24,6 +24,7 @@ export default class GameScene extends Phaser.Scene {
     private cdLsTut: boolean = false; 
     private foundFile: boolean = false;
     private won: boolean = false;
+    private battleMusic: Phaser.Sound.BaseSound;
 
     constructor() {
         super({ key: "GameScene" });
@@ -113,6 +114,8 @@ export default class GameScene extends Phaser.Scene {
             backgroundColor: "#000000",
         });
         this.consoleDialogue.setScrollFactor(0);
+
+        this.battleMusic = this.sound.add('battleMusic', {loop: true});
     }
 
     update() {
@@ -176,6 +179,7 @@ export default class GameScene extends Phaser.Scene {
     handleRoboInteraction = () => {
         // Display textbox with NPC dialogue
         if (!this.fighting) {
+            this.battleMusic.pause();
             this.roboDialogue?.setText(
                 "Hello! To get past that door, get through that evil mage!\nWe can find his vulnerabilties using the spell 'ls.' Test it out here!"
             );
@@ -244,6 +248,7 @@ export default class GameScene extends Phaser.Scene {
                     this.eventEmitter,
                     this.fighting
                 );
+                this.battleMusic.play();
             }
         } else {
             if (this.curDir==="enemy") {
