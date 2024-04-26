@@ -13,6 +13,9 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image("background", "assets/background.png");
         this.load.image("robo_guy", "assets/robo.png");
         this.load.image("rugged_wizard", "assets/rugged_wizard.png");
+        this.load.image("door", "assets/door.png");
+        this.load.image("tiles", "assets/dungeonTiles.png");
+        this.load.tilemapTiledJSON("dungeon", "assets/BashDungeonMapJs.json");
     }
 
     create() {
