@@ -29,26 +29,26 @@ export default class GameScene extends Phaser.Scene {
         super({ key: "GameScene" });
     }
 
+    handleOverlap() {}
     create() {
-        //level design
-        this.add.image(600, 400, "background").setScale(2);
+        //LEVEL DESIGN
+        //this.physics.add.image(600, 400, "background").setScale(1);
+        this.physics.world.setBounds(0, 0, 1600, 1600);
+        this.add.image(750, 350, "door").setScale(0.18);
+        //characters
+        const map = this.make.tilemap({ key: "dungeon" });
+        const tileset = map.addTilesetImage("dungeon_tiles6", "tiles", 8, 8);
 
-        this.platforms = this.physics.add.staticGroup();
-        const level: Phaser.Physics.Arcade.Image = this.platforms
-            .create(400, 400, "platform")
-            .setScale(2, 1);
-
-        this.physics.world.setBounds(
-            65, //div by 6?
-            170, //div by 2 ish?
-            level.displayWidth,
-            level.displayHeight
+        map.createLayer(
+            "Tile Layer 1",
+            tileset as Phaser.Tilemaps.Tileset,
+            0,
+            0
         );
 
-        this.add.image(750, 350, "door").setScale(0.18);
-
-        //characters
         this.wizard = this.physics.add.sprite(220, 375, "wizard");
+        const camera = this.cameras.main;
+        camera.startFollow(this.wizard);
         this.wizard.setCollideWorldBounds(true);
 
         this.NPCs = this.physics.add.group();
