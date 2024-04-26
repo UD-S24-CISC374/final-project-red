@@ -32,12 +32,11 @@ export default class GameScene extends Phaser.Scene {
     handleOverlap() {}
     create() {
         //LEVEL DESIGN
-        //this.physics.add.image(600, 400, "background").setScale(1);
         this.physics.world.setBounds(0, 0, 1600, 1600);
         this.add.image(750, 350, "door").setScale(0.18);
         //characters
         const map = this.make.tilemap({ key: "dungeon" });
-        const tileset = map.addTilesetImage("dungeon_tiles6", "tiles", 8, 8);
+        const tileset = map.addTilesetImage("dungeon_tiles_v4", "tiles");
 
         map.createLayer(
             "Tile Layer 1",

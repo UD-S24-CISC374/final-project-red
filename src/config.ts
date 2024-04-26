@@ -10,7 +10,7 @@ export const CONFIG = {
     title: "Bash",
     version: "0.0.1",
     type: Phaser.AUTO,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#000000",
     scale: {
         parent: "phaser-game",
         mode: Phaser.Scale.FIT,
