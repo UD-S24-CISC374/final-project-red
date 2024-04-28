@@ -38,17 +38,21 @@ export default class GameScene extends Phaser.Scene {
         const map = this.make.tilemap({ key: "dungeon" });
         const tileset = map.addTilesetImage("dungeon_tiles_v4", "tiles");
 
-        map.createLayer(
-            "Tile Layer 1",
+        map.createLayer("Ground", tileset as Phaser.Tilemaps.Tileset, 0, 0);
+        const wall_layer = map.createLayer(
+            "Walls",
             tileset as Phaser.Tilemaps.Tileset,
             0,
             0
         );
 
+        wall_layer!.setCollisionByProperty({ Collides: true });
+
         this.wizard = this.physics.add.sprite(220, 375, "wizard");
         const camera = this.cameras.main;
         camera.startFollow(this.wizard);
         this.wizard.setCollideWorldBounds(true);
+        this.physics.add.collider(this.wizard, wall_layer!);
 
         this.NPCs = this.physics.add.group();
         const robo: Phaser.Physics.Arcade.Sprite = this.NPCs.create(
