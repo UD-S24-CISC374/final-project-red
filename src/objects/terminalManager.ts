@@ -54,5 +54,11 @@ export class TerminalManager {
         if (event.key === " ") {
             this.inputElement.value += " ";
         }
+        if (event.key == "Backspace") {
+            //prevent the elimination of the prompt
+            if (this.inputElement.value === this.prompt) {
+                event.preventDefault();
+            }
+        }
     }
 }
