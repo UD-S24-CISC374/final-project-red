@@ -2,7 +2,8 @@ import Phaser from "phaser";
 import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
 
 export class ConsoleHelper {
-    constructor() {}
+    constructor() {
+    }
 
     handleConsoleText = (
         text: string,
@@ -14,7 +15,7 @@ export class ConsoleHelper {
         curDir: string,
         foundFile: boolean,
         won: boolean,
-        consoleDialogue?: Phaser.GameObjects.Text
+        consoleDialogue?: Phaser.GameObjects.Text,
     ): ConsoleHelperInterface => {
         if (!fighting) {
             if (text === "$> ls" && curDir === "") {
@@ -30,7 +31,7 @@ export class ConsoleHelper {
                 consoleDialogue?.setText("aboutMe: secret.txt");
                 cdLsTut = true;
             }
-            if (text === "$> cd ." && curDir === "aboutMe") {
+            if (text === "$> cd .." && curDir === "aboutMe") {
                 consoleDialogue?.setText("");
                 cdBackTut = true;
             }
@@ -55,7 +56,7 @@ export class ConsoleHelper {
                 if (text === "$> ls") {
                     consoleDialogue?.setText("evilStuff: notHere.txt mage.txt");
                 }
-                if (text === "$> cd .") {
+                if (text === "$> cd ..") {
                     curDir = "enemy";
                     consoleDialogue?.setText("enemy:");
                 }
@@ -68,7 +69,7 @@ export class ConsoleHelper {
                     curDir = "doNotLook";
                     consoleDialogue?.setText("doNotLook:");
                 }
-                if (text === "$> cd .") {
+                if (text === "$> cd ..") {
                     curDir = "enemy";
                     consoleDialogue?.setText("enemy:");
                 }
@@ -80,6 +81,7 @@ export class ConsoleHelper {
                 }
                 if (text === "$> selfDestruct.sh") {
                     won = true;
+                    consoleDialogue?.setText("");
                 }
             }
         }
