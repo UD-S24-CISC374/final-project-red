@@ -25,6 +25,8 @@ export default class GameScene extends Phaser.Scene {
     private foundFile: boolean = false;
     private won: boolean = false;
     private battleMusic: Phaser.Sound.BaseSound;
+    private playerHealth?: Phaser.GameObjects.Sprite;
+    private enemyHealth?: Phaser.GameObjects.Sprite;
 
     constructor() {
         super({ key: "GameScene" });
@@ -126,11 +128,21 @@ export default class GameScene extends Phaser.Scene {
         this.consoleDialogue.setScrollFactor(0);
 
         this.battleMusic = this.sound.add('battleMusic', {loop: true});
+
+        // hearts
+        this.playerHealth = this.add.sprite(this.wizard!.x, this.wizard!.y - 50, "hearts").setScale(0.8);
+        this.enemyHealth = this.add.sprite(this.rugged_wizard!.x, this.rugged_wizard!.y - 50, "hearts").setScale(0.8);
     }
 
     update() {
         if (!this.cursor) {
             return;
+        }
+         if (this.playerHealth) {
+            this.playerHealth.setPosition(this.wizard!.x, this.wizard!.y - 50);
+        }
+        if (this.enemyHealth) {
+            this.enemyHealth.setPosition(this.rugged_wizard!.x, this.rugged_wizard!.y - 50);
         }
         if (!this.fighting) {
             if (this.cursor.left.isDown) {
