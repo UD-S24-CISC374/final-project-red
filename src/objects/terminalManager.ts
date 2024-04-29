@@ -27,11 +27,10 @@ export class TerminalManager {
             this.inputElement.style.bottom = "20px";
             this.inputElement.style.left = "25%";
             this.inputElement.style.width = "50%";
-            this.inputElement.style.height = "90px";
+            this.inputElement.style.height = "80px";
             this.inputElement.style.border = "1px solid #ccc";
             this.inputElement.style.backgroundColor = "#2D2E2C";
             this.inputElement.style.color = "red";
-            this.inputElement.style.paddingBottom = "90px";
         }
 
         document.body.appendChild(this.inputElement);
