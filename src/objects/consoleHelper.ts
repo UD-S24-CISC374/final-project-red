@@ -2,8 +2,9 @@ import Phaser from "phaser";
 import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
 
 export class ConsoleHelper {
-    constructor() {}
-    
+    constructor() {
+    }
+
     handleConsoleText = (
         text: string,
         fighting: boolean,
@@ -14,7 +15,7 @@ export class ConsoleHelper {
         curDir: string,
         foundFile: boolean,
         won: boolean,
-        consoleDialogue?: Phaser.GameObjects.Text
+        consoleDialogue?: Phaser.GameObjects.Text,
     ): ConsoleHelperInterface => {
         if (!fighting) {
             if (text === "$> ls" && curDir === "") {
@@ -80,6 +81,7 @@ export class ConsoleHelper {
                 }
                 if (text === "$> selfDestruct.sh") {
                     won = true;
+                    consoleDialogue?.setText("");
                 }
             }
         }

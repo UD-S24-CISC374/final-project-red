@@ -48,9 +48,9 @@ export default class GameScene extends Phaser.Scene {
         won: this.won,
         consoleDialogue: this.consoleDialogue,
     };
-    private battleMusic: Phaser.Sound.BaseSound;
     private playerHealth?: Phaser.GameObjects.Sprite;
     private rugWizHealth?: Phaser.GameObjects.Sprite;
+    private battleMusic: Phaser.Sound.BaseSound;
 
     constructor() {
         super({ key: "GameScene" });
@@ -154,15 +154,17 @@ export default class GameScene extends Phaser.Scene {
         });
         this.consoleDialogue.setScrollFactor(0);
 
-        this.battleMusic = this.sound.add('battleMusic', {loop: true});
         
         // hearts
         this.playerHealth = this.add.sprite(this.wizard!.x, this.wizard!.y - 50, "hearts", 0);
         this.rugWizHealth = this.add.sprite(this.rugged_wizard!.x, this.rugged_wizard!.y - 50, "hearts", 0);
         this.playerHealth.setScale(1.5);
         this.rugWizHealth.setScale(1.5);
-        this.playerHealth.setVisible(false);
-        this.rugWizHealth.setVisible(false)
+
+        this.battleMusic = this.sound.add('battleMusic', {loop: true});
+        // hearts always visible
+        // this.playerHealth.setVisible(false);
+        // this.rugWizHealth.setVisible(false)
     }
 
     update() {
@@ -171,12 +173,14 @@ export default class GameScene extends Phaser.Scene {
         }
         if (this.playerHealth) {
             this.playerHealth.setPosition(this.wizard!.x, this.wizard!.y - 50);
-            }
+        }
         if (this.rugWizHealth) {
             this.rugWizHealth.setPosition(this.rugged_wizard!.x, this.rugged_wizard!.y - 50);
         }
         if (this.fighting) {
-            console.log("playing music");
+            if (!this.battleMusic.isPlaying) {
+                this.battleMusic.play();
+            }
             this.playerHealth?.setVisible(true);
             this.rugWizHealth?.setVisible(true);
         }
@@ -199,6 +203,10 @@ export default class GameScene extends Phaser.Scene {
                 this.wizard?.setVelocityY(0);
                 this.wizard?.anims.play("idle");
             }
+        }
+
+        if (this.won) {
+            this.rugWizHealth?.setFrame(4)
         }
 
         if (
