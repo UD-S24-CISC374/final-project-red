@@ -16,12 +16,12 @@ export default class GameScene extends Phaser.Scene {
     private consoleDialogue?: Phaser.GameObjects.Text;
     private fighting: boolean = false;
     private eventEmitter = new Phaser.Events.EventEmitter();
-    private lsTutorial: boolean = false; 
+    private lsTutorial: boolean = false;
     private cdTutorial: boolean = false;
     private curDir?: string = "";
-    private cdBackTut: boolean = false; 
+    private cdBackTut: boolean = false;
     private instructionDialogue?: Phaser.GameObjects.Text;
-    private cdLsTut: boolean = false; 
+    private cdLsTut: boolean = false;
     private foundFile: boolean = false;
     private won: boolean = false;
     private battleMusic: Phaser.Sound.BaseSound;
@@ -30,25 +30,30 @@ export default class GameScene extends Phaser.Scene {
         super({ key: "GameScene" });
     }
 
+    handleOverlap() {}
     create() {
-        //level design
-        this.add.image(600, 400, "background").setScale(2);
+        //LEVEL DESIGN
+        this.physics.world.setBounds(0, 0, 1600, 1600);
+        this.add.image(750, 350, "door").setScale(0.18);
+        //characters
+        const map = this.make.tilemap({ key: "dungeon" });
+        const tileset = map.addTilesetImage("dungeon_tiles_v4", "tiles");
 
-        this.platforms = this.physics.add.staticGroup();
-        const level: Phaser.Physics.Arcade.Image = this.platforms
-            .create(400, 400, "platform")
-            .setScale(2, 1);
-
-        this.physics.world.setBounds(
-            65, //div by 6?
-            170, //div by 2 ish?
-            level.displayWidth,
-            level.displayHeight
+        map.createLayer("Ground", tileset as Phaser.Tilemaps.Tileset, 0, 0);
+        const wall_layer = map.createLayer(
+            "Walls",
+            tileset as Phaser.Tilemaps.Tileset,
+            0,
+            0
         );
 
-        //characters
+        wall_layer!.setCollisionByProperty({ Collides: true });
+
         this.wizard = this.physics.add.sprite(220, 375, "wizard");
+        const camera = this.cameras.main;
+        camera.startFollow(this.wizard);
         this.wizard.setCollideWorldBounds(true);
+        this.physics.add.collider(this.wizard, wall_layer!);
 
         this.NPCs = this.physics.add.group();
         const robo: Phaser.Physics.Arcade.Sprite = this.NPCs.create(
@@ -101,11 +106,16 @@ export default class GameScene extends Phaser.Scene {
         });
         this.evilDialogue.setScrollFactor(0);
 
-        this.instructionDialogue = this.add.text(100, 100, "Explore the map using the arrow keys\nand interact with NPCs by going near them - good luck!", {
-            fontSize: "24px",
-            color: "#ffffff",
-            backgroundColor: "#000000",
-        });
+        this.instructionDialogue = this.add.text(
+            100,
+            100,
+            "Explore the map using the arrow keys\nand interact with NPCs by going near them - good luck!",
+            {
+                fontSize: "24px",
+                color: "#ffffff",
+                backgroundColor: "#000000",
+            }
+        );
         this.roboDialogue.setScrollFactor(0);
 
         this.consoleDialogue = this.add.text(100, 160, "", {
@@ -141,8 +151,13 @@ export default class GameScene extends Phaser.Scene {
                 this.wizard?.anims.play("idle");
             }
         }
-        
-        if (this.input.keyboard?.createCursorKeys().left.isDown || this.input.keyboard?.createCursorKeys().right.isDown || this.input.keyboard?.createCursorKeys().up.isDown ||this.input.keyboard?.createCursorKeys().down.isDown) {
+
+        if (
+            this.input.keyboard?.createCursorKeys().left.isDown ||
+            this.input.keyboard?.createCursorKeys().right.isDown ||
+            this.input.keyboard?.createCursorKeys().up.isDown ||
+            this.input.keyboard?.createCursorKeys().down.isDown
+        ) {
             this.instructionDialogue?.setText("");
         }
 
@@ -172,7 +187,6 @@ export default class GameScene extends Phaser.Scene {
             } else {
                 this.evilDialogue?.setText("");
             }
-
         }
     }
 
@@ -184,29 +198,41 @@ export default class GameScene extends Phaser.Scene {
                 "Hello! To get past that door, get through that evil mage!\nWe can find his vulnerabilties using the spell 'ls.' Test it out here!"
             );
             if (this.lsTutorial) {
-                this.roboDialogue?.setText("ls lists the files and directories inside your current directory!\nThere is another spell 'cd' - Try doing cd aboutMe");
-                this.curDir = "aboutMe"
+                this.roboDialogue?.setText(
+                    "ls lists the files and directories inside your current directory!\nThere is another spell 'cd' - Try doing cd aboutMe"
+                );
+                this.curDir = "aboutMe";
             }
             if (this.cdTutorial) {
-                this.roboDialogue?.setText("cd lets you navigate filesystems and move around to different directories.\nNow, try using the spell you just learned to list everything in here!")
+                this.roboDialogue?.setText(
+                    "cd lets you navigate filesystems and move around to different directories.\nNow, try using the spell you just learned to list everything in here!"
+                );
             }
             if (this.cdLsTut) {
                 this.roboDialogue?.setText("Nice, here's everything inside the aboutMe folder.\nTo go back to the previous directory, do 'cd ..'");
             }
             if (this.cdBackTut) {
-                this.roboDialogue?.setText("Great - we'll learn more later!\nYou are ready to take on your first enemy! Type 'cd enemy'");
+                this.roboDialogue?.setText(
+                    "Great - we'll learn more later!\nYou are ready to take on your first enemy! Type 'cd enemy'"
+                );
             }
         }
 
         if (this.fighting) {
             if (!this.foundFile) {
-                this.roboDialogue?.setText("There is a file somewhere that will disable the mage.\nIt might be hidden, so use ls and cd to find it.");
+                this.roboDialogue?.setText(
+                    "There is a file somewhere that will disable the mage.\nIt might be hidden, so use ls and cd to find it."
+                );
             }
             if (this.foundFile) {
-                this.roboDialogue?.setText("You found it! Type selfDestruct.sh to defeat the mage!");
+                this.roboDialogue?.setText(
+                    "You found it! Type selfDestruct.sh to defeat the mage!"
+                );
             }
             if (this.won) {
-                this.roboDialogue?.setText("You beat the evil mage! Now you can explore past him!");
+                this.roboDialogue?.setText(
+                    "You beat the evil mage! Now you can explore past him!"
+                );
                 this.fighting = false;
             }
         }
@@ -235,7 +261,7 @@ export default class GameScene extends Phaser.Scene {
             if (text === "$> cd .." && this.curDir === "aboutMe") {
                 this.consoleDialogue?.setText("");
                 this.cdBackTut = true;
-            } 
+            }
             if (text === "$> cd enemy") {
                 this.wizard?.setX(300);
                 this.wizard?.setY(400);
@@ -251,23 +277,27 @@ export default class GameScene extends Phaser.Scene {
                 this.battleMusic.play();
             }
         } else {
-            if (this.curDir==="enemy") {
+            if (this.curDir === "enemy") {
                 // enemy home directory
                 if (text === "$> ls") {
-                    this.consoleDialogue?.setText("Enemy: evilStuff  evilThings evil.txt")
+                    this.consoleDialogue?.setText(
+                        "Enemy: evilStuff  evilThings evil.txt"
+                    );
                 }
                 if (text === "$> cd evilStuff") {
                     this.curDir = "evilStuff";
                     this.consoleDialogue?.setText("evilStuff:");
                 }
                 if (text === "$> cd evilThings") {
-                    this.curDir = "evilThings"; 
+                    this.curDir = "evilThings";
                     this.consoleDialogue?.setText("evilThings:");
                 }
             }
-            if (this.curDir==="evilStuff") {
+            if (this.curDir === "evilStuff") {
                 if (text === "$> ls") {
-                    this.consoleDialogue?.setText("evilStuff: notHere.txt mage.txt")
+                    this.consoleDialogue?.setText(
+                        "evilStuff: notHere.txt mage.txt"
+                    );
                 }
                 if (text === "$> cd ..") {
                     this.curDir = "enemy";
@@ -276,11 +306,11 @@ export default class GameScene extends Phaser.Scene {
             }
             if (this.curDir === "evilThings") {
                 if (text === "$> ls") {
-                    this.consoleDialogue?.setText("evilStuff: doNotLook")
+                    this.consoleDialogue?.setText("evilStuff: doNotLook");
                 }
                 if (text === "$> cd doNotLook") {
                     this.curDir = "doNotLook";
-                    this.consoleDialogue?.setText("doNotLook:")
+                    this.consoleDialogue?.setText("doNotLook:");
                 }
                 if (text === "$> cd ..") {
                     this.curDir = "enemy";
@@ -289,7 +319,7 @@ export default class GameScene extends Phaser.Scene {
             }
             if (this.curDir === "doNotLook") {
                 if (text === "$> ls") {
-                    this.consoleDialogue?.setText("doNotLook: selfDestruct.sh")
+                    this.consoleDialogue?.setText("doNotLook: selfDestruct.sh");
                     this.foundFile = true;
                 }
                 if (text === "$> selfDestruct.sh") {
@@ -305,18 +335,4 @@ export default class GameScene extends Phaser.Scene {
             this.handleConsoleText("ls");
         }
     };
-
-    /* private enableWASDKeys() {
-        this.input.keyboard?.addKeys({
-            W: Phaser.Input.Keyboard.KeyCodes.W,
-            A: Phaser.Input.Keyboard.KeyCodes.A,
-            S: Phaser.Input.Keyboard.KeyCodes.S,
-            D: Phaser.Input.Keyboard.KeyCodes.D,
-        }) as {
-            W: Phaser.Input.Keyboard.Key;
-            A: Phaser.Input.Keyboard.Key;
-            S: Phaser.Input.Keyboard.Key;
-            D: Phaser.Input.Keyboard.Key;
-        };
-    } */
 }
