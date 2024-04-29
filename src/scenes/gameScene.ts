@@ -1,13 +1,17 @@
 import Phaser from "phaser";
 import { TerminalManager } from "../objects/terminalManager";
+import { Directories } from "../interfaces/directories";
+import { NpcHelper } from "../objects/npcHelper";
+
+//this.fighting, this.lsTutorial, this.cdTutorial, this.cdLsTut, this.cdBackTut, this.curDir, this.foundFile, this.won
 
 export default class GameScene extends Phaser.Scene {
     private wizard?: Phaser.Physics.Arcade.Sprite;
     private NPCs: Phaser.Physics.Arcade.Group;
     private enemies: Phaser.Physics.Arcade.Group;
-    private platforms: Phaser.Physics.Arcade.StaticGroup;
     private cursor?: Phaser.Types.Input.Keyboard.CursorKeys;
     private terminalManager: TerminalManager;
+    private handleNPC: NpcHelper;
     private roboDialogue?: Phaser.GameObjects.Text;
     private robo?: Phaser.Physics.Arcade.Sprite;
     private rugged_wizard?: Phaser.Physics.Arcade.Sprite;
@@ -24,6 +28,11 @@ export default class GameScene extends Phaser.Scene {
     private cdLsTut: boolean = false;
     private foundFile: boolean = false;
     private won: boolean = false;
+    private directories: Directories = {
+        fighting: this.fighting,
+        curDir: this.curDir,
+        dialogue: this.roboDialogue,
+    };
 
     constructor() {
         super({ key: "GameScene" });
@@ -31,6 +40,8 @@ export default class GameScene extends Phaser.Scene {
 
     handleOverlap() {}
     create() {
+        this.handleNPC = new NpcHelper();
+
         //LEVEL DESIGN
         this.physics.world.setBounds(0, 0, 1600, 1600);
         this.add.image(750, 350, "door").setScale(0.18);
@@ -173,7 +184,20 @@ export default class GameScene extends Phaser.Scene {
             );
 
             if (npcDistance < 100) {
-                this.handleRoboInteraction();
+                this.directories = this.handleNPC.handleRoboInteraction(
+                    this.fighting,
+                    this.lsTutorial,
+                    this.cdTutorial,
+                    this.cdLsTut,
+                    this.cdBackTut,
+                    this.curDir,
+                    this.foundFile,
+                    this.won,
+                    this.roboDialogue
+                );
+                this.fighting = this.directories.fighting;
+                this.curDir = this.directories.curDir;
+                this.roboDialogue = this.directories.dialogue;
             } else {
                 this.roboDialogue?.setText("");
             }
