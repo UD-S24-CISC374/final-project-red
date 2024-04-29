@@ -48,6 +48,9 @@ export default class GameScene extends Phaser.Scene {
         won: this.won,
         consoleDialogue: this.consoleDialogue,
     };
+    private battleMusic: Phaser.Sound.BaseSound;
+    private playerHealth?: Phaser.GameObjects.Sprite;
+    private rugWizHealth?: Phaser.GameObjects.Sprite;
 
     constructor() {
         super({ key: "GameScene" });
@@ -152,7 +155,7 @@ export default class GameScene extends Phaser.Scene {
         this.consoleDialogue.setScrollFactor(0);
 
         this.battleMusic = this.sound.add('battleMusic', {loop: true});
-
+        
         // hearts
         this.playerHealth = this.add.sprite(this.wizard!.x, this.wizard!.y - 50, "hearts", 0);
         this.rugWizHealth = this.add.sprite(this.rugged_wizard!.x, this.rugged_wizard!.y - 50, "hearts", 0);
@@ -173,10 +176,12 @@ export default class GameScene extends Phaser.Scene {
             this.rugWizHealth.setPosition(this.rugged_wizard!.x, this.rugged_wizard!.y - 50);
         }
         if (this.fighting) {
+            console.log("playing music");
             this.playerHealth?.setVisible(true);
             this.rugWizHealth?.setVisible(true);
         }
         if (!this.fighting) {
+            this.battleMusic.pause();
             if (this.cursor.left.isDown) {
                 this.wizard?.setVelocityX(-260);
                 //this.wizard?.anims.play("left", true);

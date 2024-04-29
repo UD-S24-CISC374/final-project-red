@@ -3,7 +3,7 @@ import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
 
 export class ConsoleHelper {
     constructor() {}
-
+    
     handleConsoleText = (
         text: string,
         fighting: boolean,
@@ -30,7 +30,7 @@ export class ConsoleHelper {
                 consoleDialogue?.setText("aboutMe: secret.txt");
                 cdLsTut = true;
             }
-            if (text === "$> cd ." && curDir === "aboutMe") {
+            if (text === "$> cd .." && curDir === "aboutMe") {
                 consoleDialogue?.setText("");
                 cdBackTut = true;
             }
@@ -55,7 +55,7 @@ export class ConsoleHelper {
                 if (text === "$> ls") {
                     consoleDialogue?.setText("evilStuff: notHere.txt mage.txt");
                 }
-                if (text === "$> cd .") {
+                if (text === "$> cd ..") {
                     curDir = "enemy";
                     consoleDialogue?.setText("enemy:");
                 }
@@ -68,7 +68,7 @@ export class ConsoleHelper {
                     curDir = "doNotLook";
                     consoleDialogue?.setText("doNotLook:");
                 }
-                if (text === "$> cd .") {
+                if (text === "$> cd ..") {
                     curDir = "enemy";
                     consoleDialogue?.setText("enemy:");
                 }
