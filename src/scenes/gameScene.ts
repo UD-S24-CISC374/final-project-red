@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import { TerminalManager } from "../objects/terminalManager";
 import { Directories } from "../interfaces/directories";
 import { NpcHelper } from "../objects/npcHelper";
+import { ConsoleHelper } from "../objects/consoleHelper";
+import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
 
 //this.fighting, this.lsTutorial, this.cdTutorial, this.cdLsTut, this.cdBackTut, this.curDir, this.foundFile, this.won
 
@@ -12,6 +14,7 @@ export default class GameScene extends Phaser.Scene {
     private cursor?: Phaser.Types.Input.Keyboard.CursorKeys;
     private terminalManager: TerminalManager;
     private handleNPC: NpcHelper;
+    private consoleHelp: ConsoleHelper;
     private roboDialogue?: Phaser.GameObjects.Text;
     private robo?: Phaser.Physics.Arcade.Sprite;
     private rugged_wizard?: Phaser.Physics.Arcade.Sprite;
@@ -33,6 +36,18 @@ export default class GameScene extends Phaser.Scene {
         curDir: this.curDir,
         dialogue: this.roboDialogue,
     };
+    private ConsoleHelperObj: ConsoleHelperInterface = {
+        text: "",
+        fighting: this.fighting,
+        lsTutorial: this.lsTutorial,
+        cdTutorial: this.cdTutorial,
+        cdLsTut: this.cdLsTut,
+        cdBackTut: this.cdBackTut,
+        curDir: this.curDir!,
+        foundFile: this.foundFile,
+        won: this.won,
+        consoleDialogue: this.consoleDialogue,
+    };
 
     constructor() {
         super({ key: "GameScene" });
@@ -41,6 +56,7 @@ export default class GameScene extends Phaser.Scene {
     handleOverlap() {}
     create() {
         this.handleNPC = new NpcHelper();
+        this.consoleHelp = new ConsoleHelper();
 
         //LEVEL DESIGN
         this.physics.world.setBounds(0, 0, 1600, 1600);
@@ -210,7 +226,7 @@ export default class GameScene extends Phaser.Scene {
             }
         }
     }
-
+    /*
     handleRoboInteraction = () => {
         // Display textbox with NPC dialogue
         if (!this.fighting) {
@@ -259,14 +275,50 @@ export default class GameScene extends Phaser.Scene {
             }
         }
     };
-
+*/
     handleRuggedInteraction = () => {
         // Display textbox with NPC dialogue
         this.evilDialogue?.setText("You better be careful...");
     };
 
     handleConsoleText = (text: string) => {
-        if (!this.fighting) {
+        if (text === "$> cd enemy") {
+            this.wizard?.setX(300);
+            this.wizard?.setY(400);
+            this.robo?.setX(201);
+            this.robo?.setY(400);
+            this.fighting = true;
+            this.curDir = "enemy";
+            this.consoleDialogue?.setText("Enemy:");
+            this.terminalManager = new TerminalManager(
+                this.eventEmitter,
+                this.fighting
+            );
+        } else {
+            this.ConsoleHelperObj = this.consoleHelp.handleConsoleText(
+                text,
+                this.fighting,
+                this.lsTutorial,
+                this.cdTutorial,
+                this.cdLsTut,
+                this.cdBackTut,
+                this.curDir!,
+                this.foundFile,
+                this.won,
+                this.consoleDialogue
+            );
+            text = this.ConsoleHelperObj.text;
+            this.fighting = this.ConsoleHelperObj.fighting;
+            this.lsTutorial = this.ConsoleHelperObj.lsTutorial;
+            this.cdTutorial = this.ConsoleHelperObj.cdTutorial;
+            this.cdLsTut = this.ConsoleHelperObj.cdLsTut;
+            this.cdBackTut = this.ConsoleHelperObj.cdBackTut;
+            this.curDir! = this.ConsoleHelperObj.curDir;
+            this.foundFile = this.ConsoleHelperObj.foundFile;
+            this.won = this.ConsoleHelperObj.won;
+            this.consoleDialogue = this.ConsoleHelperObj.consoleDialogue;
+        }
+        /*        if (!this.fighting) {
             if (text === "$> ls" && this.curDir === "") {
                 this.consoleDialogue?.setText("aboutMe dungeon.txt");
                 this.lsTutorial = true;
@@ -347,7 +399,7 @@ export default class GameScene extends Phaser.Scene {
                     this.won = true;
                 }
             }
-        }
+        } */
     };
 
     handleUserInput = (userInput: string) => {
