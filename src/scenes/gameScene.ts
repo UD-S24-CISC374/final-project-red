@@ -58,13 +58,12 @@ export default class GameScene extends Phaser.Scene {
 
     handleOverlap() {}
     create() {
+        //CLASSES --------
         this.handleNPC = new NpcHelper();
         this.consoleHelp = new ConsoleHelper();
 
-        //LEVEL DESIGN
-        this.physics.world.setBounds(0, 0, 1600, 1600);
-        this.add.image(750, 350, "door").setScale(0.18);
-        //characters
+        //MAP -------
+        this.physics.world.setBounds(0, 0, 1900, 2400);
         const map = this.make.tilemap({ key: "dungeon" });
         const tileset = map.addTilesetImage("dungeon_tiles_v4", "tiles");
 
@@ -78,11 +77,15 @@ export default class GameScene extends Phaser.Scene {
 
         wall_layer!.setCollisionByProperty({ Collides: true });
 
+        //SPRITES -------
+        const door = this.physics.add.image(750, 450, "door").setScale(0.18);
         this.wizard = this.physics.add.sprite(220, 375, "wizard");
         const camera = this.cameras.main;
         camera.startFollow(this.wizard);
         this.wizard.setCollideWorldBounds(true);
         this.physics.add.collider(this.wizard, wall_layer!);
+        this.physics.add.collider(this.wizard, door);
+        //door.setImmovable(true);
 
         this.NPCs = this.physics.add.group();
         const robo: Phaser.Physics.Arcade.Sprite = this.NPCs.create(
@@ -90,19 +93,29 @@ export default class GameScene extends Phaser.Scene {
             500,
             "robo_guy"
         ).setScale(0.75);
+        const hunter: Phaser.Physics.Arcade.Sprite = this.NPCs.create(
+            850,
+            1170,
+            "hunter"
+        ).setScale(0.9);
         this.physics.add.collider(this.wizard, robo);
+        this.physics.add.collider(this.wizard, hunter);
         robo.setImmovable(true);
+        hunter.setImmovable(true);
         this.robo = robo;
 
         this.enemies = this.physics.add.group();
         const rugged_wizard: Phaser.Physics.Arcade.Sprite = this.enemies
             .create(600, 400, "rugged_wizard")
             .setScale(0.145);
+
+        //const resourceful_rat: Phaser.Physics.Arcade.Sprite =
+        this.enemies.create(1120, 1360, "resourceful_rat").setScale(1.2);
         this.physics.add.collider(this.wizard, rugged_wizard);
         rugged_wizard.setImmovable(true);
         this.rugged_wizard = rugged_wizard;
 
-        //animation
+        //ANIMATION ------
         this.anims.create({
             key: "idle",
             frames: [{ key: "wizard", frame: 0 }],
@@ -121,6 +134,7 @@ export default class GameScene extends Phaser.Scene {
             this.handleConsoleText(userInput);
         });
 
+        // DIALOGUE ------
         this.roboDialogue = this.add.text(100, 100, "", {
             fontSize: "24px",
             color: "#ffffff",
@@ -154,14 +168,23 @@ export default class GameScene extends Phaser.Scene {
         });
         this.consoleDialogue.setScrollFactor(0);
 
-        
         // hearts
-        this.playerHealth = this.add.sprite(this.wizard!.x, this.wizard!.y - 50, "hearts", 0);
-        this.rugWizHealth = this.add.sprite(this.rugged_wizard!.x, this.rugged_wizard!.y - 50, "hearts", 0);
+        this.playerHealth = this.add.sprite(
+            this.wizard!.x,
+            this.wizard!.y - 50,
+            "hearts",
+            0
+        );
+        this.rugWizHealth = this.add.sprite(
+            this.rugged_wizard!.x,
+            this.rugged_wizard!.y - 50,
+            "hearts",
+            0
+        );
         this.playerHealth.setScale(1.5);
         this.rugWizHealth.setScale(1.5);
 
-        this.battleMusic = this.sound.add('battleMusic', {loop: true});
+        this.battleMusic = this.sound.add("battleMusic", { loop: true });
         // hearts always visible
         // this.playerHealth.setVisible(false);
         // this.rugWizHealth.setVisible(false)
@@ -175,7 +198,10 @@ export default class GameScene extends Phaser.Scene {
             this.playerHealth.setPosition(this.wizard!.x, this.wizard!.y - 50);
         }
         if (this.rugWizHealth) {
-            this.rugWizHealth.setPosition(this.rugged_wizard!.x, this.rugged_wizard!.y - 50);
+            this.rugWizHealth.setPosition(
+                this.rugged_wizard!.x,
+                this.rugged_wizard!.y - 50
+            );
         }
         if (this.fighting) {
             if (!this.battleMusic.isPlaying) {
@@ -206,7 +232,7 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.won) {
-            this.rugWizHealth?.setFrame(4)
+            this.rugWizHealth?.setFrame(4);
         }
 
         if (
@@ -302,7 +328,6 @@ export default class GameScene extends Phaser.Scene {
             this.consoleDialogue = this.ConsoleHelperObj.consoleDialogue;
         }
     };
-
 
     handleUserInput = (userInput: string) => {
         console.log("Recieved Input:", userInput);

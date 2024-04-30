@@ -16,6 +16,8 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.audio('battleMusic', 'assets/battle.mp3');
         this.load.image("door", "assets/door.png");
         this.load.image("tiles", "assets/dungeon_tiles_v4.png");
+        this.load.image("resourceful_rat", "assets/resourceful_rat.png");
+        this.load.image("hunter", "assets/Hunter.png");
         this.load.tilemapTiledJSON("dungeon", "assets/DungeonMap.json");
         this.load.spritesheet("hearts", "assets/hearts.png", {frameWidth: 32, frameHeight: 15} );
         this.load.image("creditsBtn", "assets/credits-btn.png");
