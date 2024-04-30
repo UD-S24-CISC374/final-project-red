@@ -63,7 +63,7 @@ export default class GameScene extends Phaser.Scene {
         this.consoleHelp = new ConsoleHelper();
 
         //MAP -------
-        this.physics.world.setBounds(0, 0, 1600, 1600);
+        this.physics.world.setBounds(0, 0, 1900, 2400);
         const map = this.make.tilemap({ key: "dungeon" });
         const tileset = map.addTilesetImage("dungeon_tiles_v4", "tiles");
 
@@ -168,14 +168,23 @@ export default class GameScene extends Phaser.Scene {
         });
         this.consoleDialogue.setScrollFactor(0);
 
-        
         // hearts
-        this.playerHealth = this.add.sprite(this.wizard!.x, this.wizard!.y - 50, "hearts", 0);
-        this.rugWizHealth = this.add.sprite(this.rugged_wizard!.x, this.rugged_wizard!.y - 50, "hearts", 0);
+        this.playerHealth = this.add.sprite(
+            this.wizard!.x,
+            this.wizard!.y - 50,
+            "hearts",
+            0
+        );
+        this.rugWizHealth = this.add.sprite(
+            this.rugged_wizard!.x,
+            this.rugged_wizard!.y - 50,
+            "hearts",
+            0
+        );
         this.playerHealth.setScale(1.5);
         this.rugWizHealth.setScale(1.5);
 
-        this.battleMusic = this.sound.add('battleMusic', {loop: true});
+        this.battleMusic = this.sound.add("battleMusic", { loop: true });
         // hearts always visible
         // this.playerHealth.setVisible(false);
         // this.rugWizHealth.setVisible(false)
@@ -189,7 +198,10 @@ export default class GameScene extends Phaser.Scene {
             this.playerHealth.setPosition(this.wizard!.x, this.wizard!.y - 50);
         }
         if (this.rugWizHealth) {
-            this.rugWizHealth.setPosition(this.rugged_wizard!.x, this.rugged_wizard!.y - 50);
+            this.rugWizHealth.setPosition(
+                this.rugged_wizard!.x,
+                this.rugged_wizard!.y - 50
+            );
         }
         if (this.fighting) {
             if (!this.battleMusic.isPlaying) {
@@ -220,7 +232,7 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.won) {
-            this.rugWizHealth?.setFrame(4)
+            this.rugWizHealth?.setFrame(4);
         }
 
         if (
@@ -316,7 +328,6 @@ export default class GameScene extends Phaser.Scene {
             this.consoleDialogue = this.ConsoleHelperObj.consoleDialogue;
         }
     };
-
 
     handleUserInput = (userInput: string) => {
         console.log("Recieved Input:", userInput);
