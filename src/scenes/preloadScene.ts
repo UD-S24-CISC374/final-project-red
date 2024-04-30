@@ -15,6 +15,8 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image("rugged_wizard", "assets/rugged_wizard.png");
         this.load.image("door", "assets/door.png");
         this.load.image("tiles", "assets/dungeon_tiles_v4.png");
+        this.load.image("resourceful_rat", "assets/resourceful_rat.png");
+        this.load.image("hunter", "assets/Hunter.png");
         this.load.tilemapTiledJSON("dungeon", "assets/DungeonMap.json");
     }
 
