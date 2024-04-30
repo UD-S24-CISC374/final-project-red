@@ -48,6 +48,9 @@ export default class GameScene extends Phaser.Scene {
         won: this.won,
         consoleDialogue: this.consoleDialogue,
     };
+    private playerHealth?: Phaser.GameObjects.Sprite;
+    private rugWizHealth?: Phaser.GameObjects.Sprite;
+    private battleMusic: Phaser.Sound.BaseSound;
 
     constructor() {
         super({ key: "GameScene" });
@@ -164,13 +167,39 @@ export default class GameScene extends Phaser.Scene {
             backgroundColor: "#000000",
         });
         this.consoleDialogue.setScrollFactor(0);
+
+        
+        // hearts
+        this.playerHealth = this.add.sprite(this.wizard!.x, this.wizard!.y - 50, "hearts", 0);
+        this.rugWizHealth = this.add.sprite(this.rugged_wizard!.x, this.rugged_wizard!.y - 50, "hearts", 0);
+        this.playerHealth.setScale(1.5);
+        this.rugWizHealth.setScale(1.5);
+
+        this.battleMusic = this.sound.add('battleMusic', {loop: true});
+        // hearts always visible
+        // this.playerHealth.setVisible(false);
+        // this.rugWizHealth.setVisible(false)
     }
 
     update() {
         if (!this.cursor) {
             return;
         }
+        if (this.playerHealth) {
+            this.playerHealth.setPosition(this.wizard!.x, this.wizard!.y - 50);
+        }
+        if (this.rugWizHealth) {
+            this.rugWizHealth.setPosition(this.rugged_wizard!.x, this.rugged_wizard!.y - 50);
+        }
+        if (this.fighting) {
+            if (!this.battleMusic.isPlaying) {
+                this.battleMusic.play();
+            }
+            this.playerHealth?.setVisible(true);
+            this.rugWizHealth?.setVisible(true);
+        }
         if (!this.fighting) {
+            this.battleMusic.pause();
             if (this.cursor.left.isDown) {
                 this.wizard?.setVelocityX(-260);
                 //this.wizard?.anims.play("left", true);
@@ -188,6 +217,10 @@ export default class GameScene extends Phaser.Scene {
                 this.wizard?.setVelocityY(0);
                 this.wizard?.anims.play("idle");
             }
+        }
+
+        if (this.won) {
+            this.rugWizHealth?.setFrame(4)
         }
 
         if (
@@ -283,6 +316,7 @@ export default class GameScene extends Phaser.Scene {
             this.consoleDialogue = this.ConsoleHelperObj.consoleDialogue;
         }
     };
+
 
     handleUserInput = (userInput: string) => {
         console.log("Recieved Input:", userInput);
