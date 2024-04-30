@@ -19,7 +19,7 @@ export class ConsoleHelper {
     ): ConsoleHelperInterface => {
         if (!fighting) {
             if (text === "$> ls" && curDir === "") {
-                consoleDialogue?.setText("aboutMe dungeon.txt");
+                consoleDialogue?.setText("aboutMe");
                 lsTutorial = true;
             }
             if (text === "$> cd aboutMe") {

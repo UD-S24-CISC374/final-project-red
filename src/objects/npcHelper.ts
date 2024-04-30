@@ -19,7 +19,7 @@ export class NpcHelper {
         if (!won) {
             if (!fighting) {
                 dialogue?.setText(
-                    "Hello! To get past that door, get through that evil mage!\nWe can find his vulnerabilties using the spell 'ls.' Test it out here!"
+                    "Hello! To get past that door, get through that evil mage!\nWe'll need to learn how to use the spell 'ls.' Test it out here!"
                 );
 
                 if (lsTutorial) {
