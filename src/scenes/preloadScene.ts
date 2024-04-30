@@ -20,6 +20,10 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image("hunter", "assets/Hunter.png");
         this.load.tilemapTiledJSON("dungeon", "assets/DungeonMap.json");
         this.load.spritesheet("hearts", "assets/hearts.png", {frameWidth: 32, frameHeight: 15} );
+        this.load.image("creditsBtn", "assets/credits-btn.png");
+        this.load.image("controlsBtn", "assets/controlsBtn.png");
+        this.load.image("creditsBackground", "assets/creditsBkd.png")
+        this.load.image("backBtn", "assets/backBtn.png");
     }
 
     create() {
