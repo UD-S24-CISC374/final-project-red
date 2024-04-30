@@ -98,10 +98,15 @@ export default class GameScene extends Phaser.Scene {
             1170,
             "hunter"
         ).setScale(0.9);
-        this.physics.add.collider(this.wizard, robo);
-        this.physics.add.collider(this.wizard, hunter);
+        const shades_boss: Phaser.Physics.Arcade.Sprite = this.NPCs.create(
+            1250,
+            1970,
+            "shades"
+        ).setScale(1);
+        this.physics.add.collider(this.wizard, this.NPCs);
         robo.setImmovable(true);
         hunter.setImmovable(true);
+        shades_boss.setImmovable(true);
         this.robo = robo;
 
         this.enemies = this.physics.add.group();
@@ -128,6 +133,16 @@ export default class GameScene extends Phaser.Scene {
             this.eventEmitter,
             this.fighting
         );
+        this.anims.create({
+            key: "shades_bounce",
+            frames: this.anims.generateFrameNumbers("shades", {
+                start: 0,
+                end: 2,
+            }),
+            frameRate: 1,
+            repeat: -1,
+        });
+        shades_boss.anims.play("shades_bounce");
 
         // Listen for the userInput event
         this.eventEmitter.on("userInput", (userInput: string) => {
