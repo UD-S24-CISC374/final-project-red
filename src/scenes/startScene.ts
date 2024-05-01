@@ -3,7 +3,7 @@ import Phaser from "phaser";
 export default class StartScene extends Phaser.Scene {
     private startBtn: Phaser.GameObjects.Image;
     private creditsBtn: Phaser.GameObjects.Image;
-    // private controlsBtn: Phaser.GameObjects.Image; 
+    // private controlsBtn: Phaser.GameObjects.Image;
 
     constructor() {
         super({ key: "StartScene" });
@@ -11,7 +11,7 @@ export default class StartScene extends Phaser.Scene {
 
     create() {
         this.add.image(640, 360, "startBackground");
-        
+
         this.add.text(165, 280, "$>Bash the Dungeon", {
             fontSize: "85px",
             color: "#fff",
@@ -30,8 +30,8 @@ export default class StartScene extends Phaser.Scene {
         this.creditsBtn.setInteractive();
 
         this.creditsBtn.on("pointerdown", () => {
-            this.scene.start("GCreditsScene");
-        })
+            this.scene.start("CreditsScene");
+        });
     }
 
     update() {}
