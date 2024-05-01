@@ -2,7 +2,40 @@ import Phaser from "phaser";
 import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
 
 export class ConsoleHelper {
+    private stack: string[] = [];
+    private hashmap = new Map<string, string>();
+    private mapFillFlag: boolean = false;
+
     constructor() {}
+
+    handleShadesBoss = (
+        text: string,
+        curDir: string,
+        consoleDialogue?: Phaser.GameObjects.Text
+    ) => {
+        if (!this.mapFillFlag) {
+            this.hashmap.set(
+                "boss",
+                "boss: [color=white]shades.txt cartridge arms legs"
+            );
+            this.hashmap.set("cartridge", "cartridge: head shell powder");
+            this.hashmap.set("head", "head: mental emotions");
+            this.hashmap.set("mental", "mental: ");
+            this.hashmap.set("emotions", "emotions: ");
+            this.mapFillFlag = true;
+            console.log(this.hashmap);
+        }
+        if (text === "$> ls") {
+            console.log(curDir);
+            consoleDialogue?.setText(this.hashmap.get(curDir)!);
+        }
+        if (text === "$> cd cartridge") {
+            this.stack.push("cartridge");
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText(this.hashmap.get(curDir)!);
+        }
+        return;
+    };
 
     handleConsoleText = (
         text: string,
@@ -62,7 +95,7 @@ export class ConsoleHelper {
             }
             if (curDir === "evilThings") {
                 if (text === "$> ls") {
-                    consoleDialogue?.setText("evilStuff: doNotLook");
+                    consoleDialogue?.setText("evilThings: doNotLook");
                 }
                 if (text === "$> cd doNotLook") {
                     curDir = "doNotLook";

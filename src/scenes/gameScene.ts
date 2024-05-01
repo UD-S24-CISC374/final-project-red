@@ -16,12 +16,18 @@ export default class GameScene extends Phaser.Scene {
     private handleNPC: NpcHelper;
     private consoleHelp: ConsoleHelper;
     private roboDialogue?: Phaser.GameObjects.Text;
+
     private robo?: Phaser.Physics.Arcade.Sprite;
     private rugged_wizard?: Phaser.Physics.Arcade.Sprite;
+    private smiley: Phaser.Physics.Arcade.Sprite;
+
+    private smileyDialogue: Phaser.GameObjects.Text;
+
     private evilDialogue?: Phaser.GameObjects.Text;
     private userInput: string = "";
     private consoleDialogue?: Phaser.GameObjects.Text;
     private fighting: boolean = false;
+    private fightNumber: number = 0;
     private eventEmitter = new Phaser.Events.EventEmitter();
     private lsTutorial: boolean = false;
     private cdTutorial: boolean = false;
@@ -75,7 +81,7 @@ export default class GameScene extends Phaser.Scene {
             0
         );
 
-        wall_layer!.setCollisionByProperty({ Collides: true });
+        //wall_layer!.setCollisionByProperty({ Collides: true });
 
         //SPRITES -------
         const door = this.physics.add.image(750, 450, "door").setScale(0.18);
@@ -157,6 +163,8 @@ export default class GameScene extends Phaser.Scene {
         });
         smiley.anims.play("smiley_bounce");
 
+        this.smiley = smiley;
+
         // Listen for the userInput event
         this.eventEmitter.on("userInput", (userInput: string) => {
             this.handleConsoleText(userInput);
@@ -195,6 +203,13 @@ export default class GameScene extends Phaser.Scene {
             backgroundColor: "#000000",
         });
         this.consoleDialogue.setScrollFactor(0);
+
+        this.smileyDialogue = this.add.text(100, 100, "", {
+            fontSize: "24px",
+            color: "white",
+            backgroundColor: "#000000",
+        });
+        this.smileyDialogue.setScrollFactor(0);
 
         // hearts
         this.playerHealth = this.add.sprite(
@@ -276,6 +291,7 @@ export default class GameScene extends Phaser.Scene {
             const playerPosition = this.wizard.getCenter();
             const npcPosition = this.robo.getCenter();
             const enemyPosition = this.rugged_wizard.getCenter();
+            const smileyPosition = this.smiley.getCenter();
 
             const npcDistance = Phaser.Math.Distance.BetweenPoints(
                 playerPosition,
@@ -285,7 +301,10 @@ export default class GameScene extends Phaser.Scene {
                 playerPosition,
                 enemyPosition
             );
-
+            const smileyDistance = Phaser.Math.Distance.BetweenPoints(
+                playerPosition,
+                smileyPosition
+            );
             if (npcDistance < 100) {
                 this.directories = this.handleNPC.handleRoboInteraction(
                     this.fighting,
@@ -311,6 +330,19 @@ export default class GameScene extends Phaser.Scene {
             } else {
                 this.evilDialogue?.setText("");
             }
+            if (smileyDistance < 150) {
+                if (!this.fighting)
+                    this.smileyDialogue.setText(
+                        "Shades seems to be really 'triggered' today, mind smacking some sense into him?\nType 'cd boss' to confront him."
+                    );
+                else {
+                    const tmp: string =
+                        "Your task: enter his emotions directory, create and call a calm.sh file\nenter his mental directory, create and call a knockout.sh file";
+                    this.smileyDialogue.setText(tmp);
+                }
+            } else {
+                this.smileyDialogue.setText("");
+            }
         }
     }
     handleRuggedInteraction = () => {
@@ -319,7 +351,7 @@ export default class GameScene extends Phaser.Scene {
     };
 
     handleConsoleText = (text: string) => {
-        if (text === "$> cd enemy") {
+        if (text === "$> cd enemy" && !this.won) {
             this.wizard?.setX(300);
             this.wizard?.setY(400);
             this.robo?.setX(201);
@@ -331,29 +363,53 @@ export default class GameScene extends Phaser.Scene {
                 this.eventEmitter,
                 this.fighting
             );
-        } else {
-            this.ConsoleHelperObj = this.consoleHelp.handleConsoleText(
+        } else if (text == "$> cd boss" /*&& this.won*/) {
+            this.wizard?.setX(950);
+            this.wizard?.setY(1970);
+            this.smiley.setX(801);
+            this.smiley.setY(1970);
+            this.fighting = true;
+            this.curDir = "boss";
+            this.consoleHelp.handleShadesBoss(
                 text,
-                this.fighting,
-                this.lsTutorial,
-                this.cdTutorial,
-                this.cdLsTut,
-                this.cdBackTut,
-                this.curDir!,
-                this.foundFile,
-                this.won,
+                this.curDir,
                 this.consoleDialogue
             );
-            text = this.ConsoleHelperObj.text;
-            this.fighting = this.ConsoleHelperObj.fighting;
-            this.lsTutorial = this.ConsoleHelperObj.lsTutorial;
-            this.cdTutorial = this.ConsoleHelperObj.cdTutorial;
-            this.cdLsTut = this.ConsoleHelperObj.cdLsTut;
-            this.cdBackTut = this.ConsoleHelperObj.cdBackTut;
-            this.curDir! = this.ConsoleHelperObj.curDir;
-            this.foundFile = this.ConsoleHelperObj.foundFile;
-            this.won = this.ConsoleHelperObj.won;
-            this.consoleDialogue = this.ConsoleHelperObj.consoleDialogue;
+            this.fightNumber = 3;
+        } else {
+            switch (this.fightNumber) {
+                case 3:
+                    this.consoleHelp.handleShadesBoss(
+                        text,
+                        this.curDir!,
+                        this.consoleDialogue
+                    );
+                    break;
+                default:
+                    this.ConsoleHelperObj = this.consoleHelp.handleConsoleText(
+                        text,
+                        this.fighting,
+                        this.lsTutorial,
+                        this.cdTutorial,
+                        this.cdLsTut,
+                        this.cdBackTut,
+                        this.curDir!,
+                        this.foundFile,
+                        this.won,
+                        this.consoleDialogue
+                    );
+                    text = this.ConsoleHelperObj.text;
+                    this.fighting = this.ConsoleHelperObj.fighting;
+                    this.lsTutorial = this.ConsoleHelperObj.lsTutorial;
+                    this.cdTutorial = this.ConsoleHelperObj.cdTutorial;
+                    this.cdLsTut = this.ConsoleHelperObj.cdLsTut;
+                    this.cdBackTut = this.ConsoleHelperObj.cdBackTut;
+                    this.curDir! = this.ConsoleHelperObj.curDir;
+                    this.foundFile = this.ConsoleHelperObj.foundFile;
+                    this.won = this.ConsoleHelperObj.won;
+                    this.consoleDialogue =
+                        this.ConsoleHelperObj.consoleDialogue;
+            }
         }
     };
 
