@@ -4,6 +4,7 @@ import { Directories } from "../interfaces/directories";
 import { NpcHelper } from "../objects/npcHelper";
 import { ConsoleHelper } from "../objects/consoleHelper";
 import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
+import { ShadesInterface } from "../interfaces/shadesInterface";
 
 //this.fighting, this.lsTutorial, this.cdTutorial, this.cdLsTut, this.cdBackTut, this.curDir, this.foundFile, this.won
 
@@ -53,6 +54,10 @@ export default class GameScene extends Phaser.Scene {
         foundFile: this.foundFile,
         won: this.won,
         consoleDialogue: this.consoleDialogue,
+    };
+    private shadesInterfaceObj: ShadesInterface = {
+        curDir: this.curDir,
+        dialogue: this.consoleDialogue,
     };
     private playerHealth?: Phaser.GameObjects.Sprite;
     private rugWizHealth?: Phaser.GameObjects.Sprite;
@@ -379,11 +384,13 @@ export default class GameScene extends Phaser.Scene {
         } else {
             switch (this.fightNumber) {
                 case 3:
-                    this.consoleHelp.handleShadesBoss(
+                    this.shadesInterfaceObj = this.consoleHelp.handleShadesBoss(
                         text,
                         this.curDir!,
                         this.consoleDialogue
                     );
+                    this.curDir = this.shadesInterfaceObj.curDir;
+                    this.consoleDialogue = this.shadesInterfaceObj.dialogue;
                     break;
                 default:
                     this.ConsoleHelperObj = this.consoleHelp.handleConsoleText(

@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
+import { ShadesInterface } from "../interfaces/shadesInterface";
 
 export class ConsoleHelper {
     private stack: string[] = [];
@@ -12,29 +13,36 @@ export class ConsoleHelper {
         text: string,
         curDir: string,
         consoleDialogue?: Phaser.GameObjects.Text
-    ) => {
+    ): ShadesInterface => {
         if (!this.mapFillFlag) {
-            this.hashmap.set(
-                "boss",
-                "boss: [color=white]shades.txt cartridge arms legs"
-            );
+            this.hashmap.set("boss", "boss: shades.txt cartridge arms legs");
             this.hashmap.set("cartridge", "cartridge: head shell powder");
             this.hashmap.set("head", "head: mental emotions");
             this.hashmap.set("mental", "mental: ");
             this.hashmap.set("emotions", "emotions: ");
+            this.stack.push("boss");
             this.mapFillFlag = true;
             console.log(this.hashmap);
         }
         if (text === "$> ls") {
             console.log(curDir);
             consoleDialogue?.setText(this.hashmap.get(curDir)!);
-        }
-        if (text === "$> cd cartridge") {
+        } else if (curDir === "boss" && text === "$> cd cartridge") {
             this.stack.push("cartridge");
             curDir = this.stack[this.stack.length - 1];
-            consoleDialogue?.setText(this.hashmap.get(curDir)!);
+            consoleDialogue?.setText("cartridge: ");
+        } else if (text === "$> cd ..") {
+            if (this.stack.length > 1) {
+                this.stack.pop();
+            }
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText("");
+        } else if (curDir === "cartridge" && text === "$> cd head") {
+            this.stack.push("head");
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText("head: ");
         }
-        return;
+        return { curDir: curDir, dialogue: consoleDialogue };
     };
 
     handleConsoleText = (
