@@ -5,7 +5,7 @@ import { ShadesInterface } from "../interfaces/shadesInterface";
 export class ConsoleHelper {
     private stack: string[] = [];
     private hashmap = new Map<string, string>();
-    private mapFillFlag: boolean = false;
+    private hashMapFillFlag: boolean = false;
     private calmFlag: boolean = false;
     private knockoutFlag: boolean = false;
 
@@ -17,13 +17,13 @@ export class ConsoleHelper {
         won3: boolean,
         consoleDialogue?: Phaser.GameObjects.Text
     ): ShadesInterface => {
-        if (!this.mapFillFlag) {
+        if (!this.hashMapFillFlag) {
             this.hashmap.set("boss", "boss: shades.txt cartridge arms legs");
             this.hashmap.set("cartridge", "cartridge: head shell powder");
             this.hashmap.set("head", "head: emotions");
             this.hashmap.set("emotions", "emotions: ");
             this.stack.push("boss");
-            this.mapFillFlag = true;
+            this.hashMapFillFlag = true;
             console.log(this.hashmap);
         }
         if (text === "$> ls") {
@@ -79,7 +79,8 @@ export class ConsoleHelper {
             consoleDialogue?.setText("Executed knockout.sh!!");
         }
         if (this.knockoutFlag && this.calmFlag) {
-            console.log("win");
+            this.hashmap.clear();
+            this.stack = [];
             return { curDir: curDir, won: true, dialogue: consoleDialogue };
         }
         return { curDir: curDir, won: won3, dialogue: consoleDialogue };
