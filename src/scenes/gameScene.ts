@@ -25,6 +25,7 @@ export default class GameScene extends Phaser.Scene {
     private enemies: Phaser.Physics.Arcade.Group;
     private shades: Phaser.Physics.Arcade.Sprite;
     private rugged_wizard?: Phaser.Physics.Arcade.Sprite;
+    private rat: Phaser.Physics.Arcade.Sprite;
 
     private door1: Phaser.Physics.Arcade.Image;
     private door2: Phaser.Physics.Arcade.Image;
@@ -54,6 +55,7 @@ export default class GameScene extends Phaser.Scene {
     private lsMkTest: boolean = false;
     private cdTest: boolean = false;
     private lsInTest: boolean = false;
+    private lsMyFile: boolean = false;
     private touchMyFile: boolean = false;
     private createdFile: boolean = false;
     private won2: boolean = false; 
@@ -87,6 +89,8 @@ export default class GameScene extends Phaser.Scene {
     private playerHealth?: Phaser.GameObjects.Sprite;
     private rugWizHealth?: Phaser.GameObjects.Sprite;
     private shadesHealth?: Phaser.GameObjects.Sprite;
+    private ratHealth?: Phaser.GameObjects.Sprite;
+
     private battleMusic: Phaser.Sound.BaseSound;
 
     constructor() {
@@ -98,6 +102,7 @@ export default class GameScene extends Phaser.Scene {
         //CLASSES --------
         this.handleNPC = new NpcHelper();
         this.consoleHelp = new ConsoleHelper();
+        this.handleNPC2 = new Npc2Helper();
 
         //MAP -------
         this.physics.world.setBounds(0, 0, 1900, 2400);
@@ -163,12 +168,13 @@ export default class GameScene extends Phaser.Scene {
             .setScale(1);
         this.shades = shades_boss;
         //const resourceful_rat: Phaser.Physics.Arcade.Sprite =
-        this.enemies.create(1120, 1360, "resourceful_rat").setScale(1.2);
+       const rat = this.enemies.create(1120, 1360, "resourceful_rat").setScale(1.2);
         this.physics.add.collider(this.wizard, rugged_wizard);
         this.physics.add.collider(this.wizard, shades_boss);
         rugged_wizard.setImmovable(true);
         shades_boss.setImmovable(true);
         this.rugged_wizard = rugged_wizard;
+        this.rat = rat; 
         
         //ANIMATION ------
         this.anims.create({
@@ -269,6 +275,12 @@ export default class GameScene extends Phaser.Scene {
             "hearts",
             0
         );
+        this.ratHealth = this.add.sprite(
+            this.rat!.x,
+            this.rat!.y - 50,
+            "hearts",
+            0
+        );
         this.shadesHealth = this.add.sprite(
             this.shades!.x,
             this.shades!.y - 100,
@@ -278,6 +290,7 @@ export default class GameScene extends Phaser.Scene {
         this.playerHealth.setScale(1.5);
         this.rugWizHealth.setScale(1.5);
         this.shadesHealth.setScale(2.0);
+        this.ratHealth.setScale(1.5);
 
         this.battleMusic = this.sound.add("battleMusic", {
             loop: true,
@@ -346,7 +359,7 @@ export default class GameScene extends Phaser.Scene {
             const enemyPosition = this.rugged_wizard.getCenter();
             const smileyPosition = this.smiley.getCenter();
             const hunterPosition = this.hunter.getCenter();
-
+            //const ratPosition = this.hunter.getCenter();
 
             const npcDistance = Phaser.Math.Distance.BetweenPoints(
                 playerPosition,
@@ -356,6 +369,10 @@ export default class GameScene extends Phaser.Scene {
                 playerPosition,
                 enemyPosition
             );
+            // const ratDistance = Phaser.Math.Distance.BetweenPoints(
+            //     playerPosition,
+            //     ratPosition
+            // )
             const smileyDistance = Phaser.Math.Distance.BetweenPoints(
                 playerPosition,
                 smileyPosition
@@ -392,6 +409,7 @@ export default class GameScene extends Phaser.Scene {
                     this.lsMkTest,
                     this.cdTest,
                     this.lsInTest,
+                    this.lsMyFile,
                     this.touchMyFile,
                     this.createdFile,
                     this.hunterDialogue

@@ -12,6 +12,7 @@ export class Npc2Helper {
         lsMkTest: boolean,
         cdTest: boolean,
         lsInTest: boolean,
+        lsMyFile: boolean,
         touchMyFile: boolean,
         createdFile: boolean,
         dialogue?: Phaser.GameObjects.Text | undefined,
@@ -32,7 +33,7 @@ export class Npc2Helper {
                     dialogue?.setText(
                         "There's your new directory Test! Do you remember how to move into directories? Move into Test"
                     );
-                    //cdTest; update curDir
+                    //cdTest
                 }
                 if (cdTest) {
                     dialogue?.setText(
@@ -44,6 +45,12 @@ export class Npc2Helper {
                     dialogue?.setText(
                         "Let's create a file. To create a file, there is a spell called 'touch'\nTry typing 'touch myFile.txt'"
                     );
+                    //lsMyFile
+                }
+                if (lsMyFile) {
+                    dialogue?.setText(
+                        "Type ls to see your new file!"
+                    )
                     //touchMyFile
                 }
                 if (touchMyFile) {

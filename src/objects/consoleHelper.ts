@@ -86,6 +86,67 @@ export class ConsoleHelper {
         return { curDir: curDir, won: won3, dialogue: consoleDialogue };
     };
 
+     handleRatConsole = (
+        text: string,
+        fighting: boolean,
+        curDir: string, 
+        won: boolean,
+        mkDirTut: boolean,
+        lsMkTest: boolean,
+        cdTest: boolean,
+        lsInTest: boolean,
+        lsMyFile: boolean,
+        touchMyFile: boolean,
+        createdFile: boolean,
+        consoleDialogue?: Phaser.GameObjects.Text | undefined,
+    ): ConsoleHelperInterface => {
+        if (!fighting) {
+            if (text === "$> mkdir Test" && curDir === "") {
+                mkDirTut = true; 
+            }
+            if (text === "$> ls" && curDir === "") {
+                consoleDialogue?.setText("Test");
+                lsMkTest = true;
+            }
+            if (text === "$> cd Test") {
+                consoleDialogue?.setText("Test:");
+                curDir = "test";
+                cdTest = true;
+            }
+            if (text === "$> ls" && curDir === "test" && !lsMyFile) {
+                consoleDialogue?.setText("Test:");
+                lsInTest = true;
+            }
+            if (text === "$> touch myFile.txt") {
+                consoleDialogue?.setText("Test:");
+                lsMyFile = true;
+            }
+            if (text === "$> ls" && curDir === "test" && lsMyFile) {
+                consoleDialogue?.setText("Test: myFile.txt")
+                touchMyFile = true; 
+            }                
+            if (text === "$> cd rat") { 
+                fighting = true;
+            }
+        } else {
+            console.log("fight 2");
+        }
+        return {
+            text, 
+            fighting,
+            curDir,
+            won,
+            mkDirTut,
+            lsMkTest,
+            cdTest,
+            lsInTest,
+            lsMyFile,
+            touchMyFile,
+            createdFile,
+        }
+    }
+};
+
     handleConsoleText = (
         text: string,
         fighting: boolean,
