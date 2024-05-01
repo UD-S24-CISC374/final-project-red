@@ -127,9 +127,72 @@ export class ConsoleHelper {
             }                
             if (text === "$> cd rat") { 
                 fighting = true;
+                curDir = "rat";
             }
         } else {
             console.log("fight 2");
+            // ls --> x y core
+            // cd core --> mkdir off --> cd off --> touch turnOff.sh
+            if (text === "$> ls" && curDir === "rat") {
+                consoleDialogue?.setText(
+                    "Rat: Chores  Core"
+                );
+            }
+            if (text === "$> cd Chores") {
+                curDir = "chores";
+            }
+            if (text === "ls" && curDir === "chores") {
+                consoleDialogue?.setText(
+                    "Chores: cleanDishes.sh"
+                );
+            }
+            if (text === "cd .." && curDir === "chores"){
+                consoleDialogue?.setText(
+                    "Rat:"
+                );
+            }
+            if (text === "$> cd Core") {
+                consoleDialogue?.setText(
+                    "Core:"
+                );
+                curDir = "core-empty"
+            }
+            if (text === "$> ls" && curDir === "core-empty") {
+                consoleDialogue?.setText(
+                    "Core: brain.sh"
+                );
+            }
+            if (text === "$> mkdir Off") {
+                consoleDialogue?.setText(
+                    "Core: brain.sh"
+                );
+                curDir = "core-off";
+            }
+            if (text === "$> ls" && curDir === "core-off"){
+                consoleDialogue?.setText(
+                   "Core: brain.sh  Off" 
+                );
+            }
+            if (text === "$> cd Off") {
+                consoleDialogue?.setText(
+                    "Off:" 
+                );
+                curDir = "off-empty";
+            }
+            if (text === "$> ls" && curDir === "off-empty") {
+                consoleDialogue?.setText(
+                    "Off:" 
+                );
+            }
+            if (text === "$> touch turnOff.sh" && curDir === "off-empty") {
+                createdFile = true;
+                curDir = "off-touch";
+            }
+            if (text === "$> ls" && curDir === "off-touch") {
+                consoleDialogue?.setText(
+                    "Off: turnOff.sh"
+                );
+            }
         }
         return {
             text, 
