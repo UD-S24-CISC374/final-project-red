@@ -30,7 +30,7 @@ export default class StartScene extends Phaser.Scene {
         this.creditsBtn.setInteractive();
 
         this.creditsBtn.on("pointerdown", () => {
-            this.scene.start("CreditsScene");
+            this.scene.start("GCreditsScene");
         })
     }
 
