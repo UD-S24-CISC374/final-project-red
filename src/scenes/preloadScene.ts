@@ -13,16 +13,31 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image("background", "assets/background.png");
         this.load.image("robo_guy", "assets/robo.png");
         this.load.image("rugged_wizard", "assets/rugged_wizard.png");
-        this.load.audio('battleMusic', 'assets/battle.mp3');
+        this.load.audio("battleMusic", "assets/battle.mp3");
         this.load.image("door", "assets/door.png");
         this.load.image("tiles", "assets/dungeon_tiles_v4.png");
         this.load.image("resourceful_rat", "assets/resourceful_rat.png");
         this.load.image("hunter", "assets/Hunter.png");
         this.load.tilemapTiledJSON("dungeon", "assets/DungeonMap.json");
-        this.load.spritesheet("hearts", "assets/hearts.png", {frameWidth: 32, frameHeight: 15} );
+        this.load.spritesheet("hearts", "assets/hearts.png", {
+            frameWidth: 32,
+            frameHeight: 15,
+        });
+        this.load.spritesheet("shades", "assets/shades_sheet.png", {
+            frameWidth: 129,
+            frameHeight: 162,
+        });
+        this.load.spritesheet("smiley", "assets/smiley_sheet.png", {
+            frameWidth: 133,
+            frameHeight: 164,
+        });
+        this.load.spritesheet("hearts", "assets/hearts.png", {
+            frameWidth: 32,
+            frameHeight: 15,
+        });
         this.load.image("creditsBtn", "assets/credits-btn.png");
         this.load.image("controlsBtn", "assets/controlsBtn.png");
-        this.load.image("creditsBackground", "assets/creditsBkd.png")
+        this.load.image("creditsBackground", "assets/creditsBkd.png");
         this.load.image("backBtn", "assets/backBtn.png");
         this.load.image("mainBtn", "assets/mainBtn.png");
     }
