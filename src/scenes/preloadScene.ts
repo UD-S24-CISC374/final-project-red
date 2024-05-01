@@ -18,7 +18,6 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image("tiles", "assets/dungeon_tiles_v4.png");
         this.load.image("resourceful_rat", "assets/resourceful_rat.png");
         this.load.image("hunter", "assets/Hunter.png");
-        //this.load.image("shades", "assets/Shades.png");
         this.load.tilemapTiledJSON("dungeon", "assets/DungeonMap.json");
         this.load.spritesheet("hearts", "assets/hearts.png", {
             frameWidth: 32,
@@ -27,6 +26,10 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.spritesheet("shades", "assets/shades_sheet.png", {
             frameWidth: 129,
             frameHeight: 162,
+        });
+        this.load.spritesheet("smiley", "assets/smiley_sheet.png", {
+            frameWidth: 133,
+            frameHeight: 164,
         });
     }
 

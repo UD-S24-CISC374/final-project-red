@@ -98,26 +98,29 @@ export default class GameScene extends Phaser.Scene {
             1170,
             "hunter"
         ).setScale(0.9);
-        const shades_boss: Phaser.Physics.Arcade.Sprite = this.NPCs.create(
-            1250,
-            1970,
-            "shades"
+        const smiley: Phaser.Physics.Arcade.Sprite = this.NPCs.create(
+            700,
+            1770,
+            "smiley"
         ).setScale(1);
         this.physics.add.collider(this.wizard, this.NPCs);
         robo.setImmovable(true);
         hunter.setImmovable(true);
-        shades_boss.setImmovable(true);
+        smiley.setImmovable(true);
         this.robo = robo;
 
         this.enemies = this.physics.add.group();
         const rugged_wizard: Phaser.Physics.Arcade.Sprite = this.enemies
             .create(600, 400, "rugged_wizard")
             .setScale(0.145);
-
+        const shades_boss: Phaser.Physics.Arcade.Sprite = this.enemies
+            .create(1250, 1970, "shades")
+            .setScale(1);
         //const resourceful_rat: Phaser.Physics.Arcade.Sprite =
         this.enemies.create(1120, 1360, "resourceful_rat").setScale(1.2);
         this.physics.add.collider(this.wizard, rugged_wizard);
         rugged_wizard.setImmovable(true);
+        shades_boss.setImmovable(true);
         this.rugged_wizard = rugged_wizard;
 
         //ANIMATION ------
@@ -139,10 +142,20 @@ export default class GameScene extends Phaser.Scene {
                 start: 0,
                 end: 2,
             }),
-            frameRate: 1,
+            frameRate: 2,
             repeat: -1,
         });
         shades_boss.anims.play("shades_bounce");
+        this.anims.create({
+            key: "smiley_bounce",
+            frames: this.anims.generateFrameNumbers("smiley", {
+                start: 0,
+                end: 2,
+            }),
+            frameRate: 2,
+            repeat: -1,
+        });
+        smiley.anims.play("smiley_bounce");
 
         // Listen for the userInput event
         this.eventEmitter.on("userInput", (userInput: string) => {
