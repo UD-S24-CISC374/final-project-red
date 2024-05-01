@@ -4,7 +4,7 @@ import { Directories } from "../interfaces/directories";
 export class Npc2Helper {
     constructor() {}
 
-    public handleGuyInteraction(
+    public handleHunterInteraction(
         fighting: boolean,
         curDir: string | undefined, 
         won: boolean,
@@ -13,6 +13,7 @@ export class Npc2Helper {
         cdTest: boolean,
         lsInTest: boolean,
         touchMyFile: boolean,
+        createdFile: boolean,
         dialogue?: Phaser.GameObjects.Text | undefined,
     ): Directories {
         if (!won) {
@@ -50,6 +51,19 @@ export class Npc2Helper {
                         "Cool, now you know how to create files!\nI think I've prepared you to take on the Rat King. Type cd rat to start your battle!"
                     )
                     //rat
+                }
+            }
+
+            if (fighting) {
+                if (!createdFile) {
+                    dialogue?.setText(
+                        "Find a directory called 'core', then create a directory called 'off'\nInisde off, create a file called 'turnOff.sh'"
+                    );
+                }
+                if (createdFile) {
+                    dialogue?.setText(
+                        "Nice! Now just type turnOff.sh to defeat the Rat King!"
+                    );
                 }
             }
         }

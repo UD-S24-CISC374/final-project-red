@@ -5,6 +5,7 @@ import { NpcHelper } from "../objects/npcHelper";
 import { ConsoleHelper } from "../objects/consoleHelper";
 import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
 import { ShadesInterface } from "../interfaces/shadesInterface";
+import { Npc2Helper } from "../objects/npc2Helper";
 
 //this.fighting, this.lsTutorial, this.cdTutorial, this.cdLsTut, this.cdBackTut, this.curDir, this.foundFile, this.won
 
@@ -15,6 +16,8 @@ export default class GameScene extends Phaser.Scene {
     private cursor?: Phaser.Types.Input.Keyboard.CursorKeys;
     private terminalManager: TerminalManager;
     private handleNPC: NpcHelper;
+    private handleNPC2: Npc2Helper;
+
     private consoleHelp: ConsoleHelper;
     private roboDialogue?: Phaser.GameObjects.Text;
 
@@ -22,9 +25,10 @@ export default class GameScene extends Phaser.Scene {
     private rugged_wizard?: Phaser.Physics.Arcade.Sprite;
     private smiley: Phaser.Physics.Arcade.Sprite;
     private shades: Phaser.Physics.Arcade.Sprite;
+    private hunter: Phaser.Physics.Arcade.Sprite;
 
     private smileyDialogue: Phaser.GameObjects.Text;
-
+    private hunterDialogue?: Phaser.GameObjects.Text;
     private evilDialogue?: Phaser.GameObjects.Text;
     private userInput: string = "";
     private consoleDialogue?: Phaser.GameObjects.Text;
@@ -40,11 +44,23 @@ export default class GameScene extends Phaser.Scene {
     private foundFile: boolean = false;
     private won: boolean = false;
     private won3: boolean = false;
+    private mkDirTut: boolean = false;
+    private lsMkTest: boolean = false;
+    private cdTest: boolean = false;
+    private lsInTest: boolean = false;
+    private touchMyFile: boolean = false;
+    private createdFile: boolean = false;
+    private won2: boolean = false; 
     private directories: Directories = {
         fighting: this.fighting,
         curDir: this.curDir,
         dialogue: this.roboDialogue,
     };
+    private directories2: Directories = {
+        fighting: this.fighting,
+        curDir: this.curDir,
+        dialogue: this.hunterDialogue,
+    }
     private ConsoleHelperObj: ConsoleHelperInterface = {
         text: "",
         fighting: this.fighting,
@@ -123,6 +139,7 @@ export default class GameScene extends Phaser.Scene {
         hunter.setImmovable(true);
         smiley.setImmovable(true);
         this.robo = robo;
+        this.hunter = hunter;
 
         this.enemies = this.physics.add.group();
         const rugged_wizard: Phaser.Physics.Arcade.Sprite = this.enemies
@@ -139,7 +156,7 @@ export default class GameScene extends Phaser.Scene {
         rugged_wizard.setImmovable(true);
         shades_boss.setImmovable(true);
         this.rugged_wizard = rugged_wizard;
-
+        
         //ANIMATION ------
         this.anims.create({
             key: "idle",
@@ -211,6 +228,13 @@ export default class GameScene extends Phaser.Scene {
             backgroundColor: "#000000",
         });
         this.consoleDialogue.setScrollFactor(0);
+
+        this.hunterDialogue = this.add.text(100, 100, "", {
+            fontSize: "24px",
+            color: "#ffffff",
+            backgroundColor: "#000000",
+        });
+        this.hunterDialogue.setScrollFactor(0);
 
         this.smileyDialogue = this.add.text(100, 100, "", {
             fontSize: "24px",
@@ -311,6 +335,8 @@ export default class GameScene extends Phaser.Scene {
             const npcPosition = this.robo.getCenter();
             const enemyPosition = this.rugged_wizard.getCenter();
             const smileyPosition = this.smiley.getCenter();
+            const hunterPosition = this.hunter.getCenter();
+
 
             const npcDistance = Phaser.Math.Distance.BetweenPoints(
                 playerPosition,
@@ -323,6 +349,10 @@ export default class GameScene extends Phaser.Scene {
             const smileyDistance = Phaser.Math.Distance.BetweenPoints(
                 playerPosition,
                 smileyPosition
+            );
+            const hunterDistance = Phaser.Math.Distance.BetweenPoints(
+                playerPosition,
+                hunterPosition
             );
             if (npcDistance < 100) {
                 this.directories = this.handleNPC.handleRoboInteraction(
@@ -343,6 +373,27 @@ export default class GameScene extends Phaser.Scene {
                 this.roboDialogue?.setText("");
             }
 
+            if (hunterDistance < 100) {
+                this.directories2 = this.handleNPC2.handleHunterInteraction(
+                    this.fighting, 
+                    this.curDir, 
+                    this.won,
+                    this.mkDirTut,
+                    this.lsMkTest,
+                    this.cdTest,
+                    this.lsInTest,
+                    this.touchMyFile,
+                    this.createdFile,
+                    this.hunterDialogue
+                );
+                this.fighting = this.directories2.fighting;
+                this.curDir = this.directories2.curDir;
+                this.hunterDialogue = this.directories2.dialogue;
+            } else {
+                if (this.hunterDialogue){
+                    this.hunterDialogue.setText("");
+                }
+            }
             if (enemyDistance < 100) {
                 // Adjust the threshold as needed
                 this.handleRuggedInteraction();
