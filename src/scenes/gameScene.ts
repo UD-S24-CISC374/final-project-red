@@ -10,28 +10,34 @@ import { Npc2Helper } from "../objects/npc2Helper";
 //this.fighting, this.lsTutorial, this.cdTutorial, this.cdLsTut, this.cdBackTut, this.curDir, this.foundFile, this.won
 
 export default class GameScene extends Phaser.Scene {
-    private wizard?: Phaser.Physics.Arcade.Sprite;
-    private NPCs: Phaser.Physics.Arcade.Group;
-    private enemies: Phaser.Physics.Arcade.Group;
     private cursor?: Phaser.Types.Input.Keyboard.CursorKeys;
     private terminalManager: TerminalManager;
     private handleNPC: NpcHelper;
     private handleNPC2: Npc2Helper;
 
     private consoleHelp: ConsoleHelper;
-    private roboDialogue?: Phaser.GameObjects.Text;
 
+    private NPCs: Phaser.Physics.Arcade.Group;
+    private wizard?: Phaser.Physics.Arcade.Sprite;
     private robo?: Phaser.Physics.Arcade.Sprite;
-    private rugged_wizard?: Phaser.Physics.Arcade.Sprite;
     private smiley: Phaser.Physics.Arcade.Sprite;
+
+    private enemies: Phaser.Physics.Arcade.Group;
     private shades: Phaser.Physics.Arcade.Sprite;
+    private rugged_wizard?: Phaser.Physics.Arcade.Sprite;
+
+    private door1: Phaser.Physics.Arcade.Image;
+    private door2: Phaser.Physics.Arcade.Image;
+    private door3: Phaser.Physics.Arcade.Image;
     private hunter: Phaser.Physics.Arcade.Sprite;
 
     private smileyDialogue: Phaser.GameObjects.Text;
     private hunterDialogue?: Phaser.GameObjects.Text;
     private evilDialogue?: Phaser.GameObjects.Text;
-    private userInput: string = "";
     private consoleDialogue?: Phaser.GameObjects.Text;
+    private roboDialogue?: Phaser.GameObjects.Text;
+
+    private userInput: string = "";
     private fighting: boolean = false;
     private fightNumber: number = 0;
     private eventEmitter = new Phaser.Events.EventEmitter();
@@ -106,17 +112,24 @@ export default class GameScene extends Phaser.Scene {
             0
         );
 
-        wall_layer!.setCollisionByProperty({ Collides: true });
+        //wall_layer!.setCollisionByProperty({ Collides: true });
 
         //SPRITES -------
-        const door = this.physics.add.image(750, 450, "door").setScale(0.18);
+        this.door1 = this.physics.add.image(750, 450, "door").setScale(0.2);
+
+        this.door2 = this.physics.add.image(850, 960, "door").setScale(0.2);
+        this.door3 = this.physics.add.image(1650, 2045, "door").setScale(0.2);
         this.wizard = this.physics.add.sprite(220, 375, "wizard");
         const camera = this.cameras.main;
         camera.startFollow(this.wizard);
         this.wizard.setCollideWorldBounds(true);
         this.physics.add.collider(this.wizard, wall_layer!);
-        this.physics.add.collider(this.wizard, door);
-        //door.setImmovable(true);
+        this.physics.add.collider(this.wizard, this.door1);
+        this.physics.add.collider(this.wizard, this.door2);
+        this.physics.add.collider(this.wizard, this.door3);
+        this.door1.setImmovable(true);
+        this.door2.setImmovable(true);
+        this.door3.setImmovable(true);
 
         this.NPCs = this.physics.add.group();
         const robo: Phaser.Physics.Arcade.Sprite = this.NPCs.create(
@@ -270,10 +283,6 @@ export default class GameScene extends Phaser.Scene {
             loop: true,
             volume: 0.05,
         });
-
-        // hearts always visible
-        // this.playerHealth.setVisible(false);
-        // this.rugWizHealth.setVisible(false)
     }
 
     update() {
@@ -319,6 +328,7 @@ export default class GameScene extends Phaser.Scene {
 
         if (this.won) {
             this.rugWizHealth?.setFrame(4);
+            this.door1.setImmovable(false);
         }
 
         if (
@@ -462,6 +472,7 @@ export default class GameScene extends Phaser.Scene {
                         this.anims.remove("shades_bounce");
                         this.curDir = "";
                         this.fightNumber = 0;
+                        this.door3.setImmovable(false);
                     }
                     break;
                 default:
