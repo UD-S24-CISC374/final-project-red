@@ -6,6 +6,8 @@ export class ConsoleHelper {
     private stack: string[] = [];
     private hashmap = new Map<string, string>();
     private mapFillFlag: boolean = false;
+    private calmFlag: boolean = false;
+    private knockoutFlag: boolean = false;
 
     constructor() {}
 
@@ -17,8 +19,7 @@ export class ConsoleHelper {
         if (!this.mapFillFlag) {
             this.hashmap.set("boss", "boss: shades.txt cartridge arms legs");
             this.hashmap.set("cartridge", "cartridge: head shell powder");
-            this.hashmap.set("head", "head: mental emotions");
-            this.hashmap.set("mental", "mental: ");
+            this.hashmap.set("head", "head: emotions");
             this.hashmap.set("emotions", "emotions: ");
             this.stack.push("boss");
             this.mapFillFlag = true;
@@ -41,6 +42,42 @@ export class ConsoleHelper {
             this.stack.push("head");
             curDir = this.stack[this.stack.length - 1];
             consoleDialogue?.setText("head: ");
+        } else if (curDir === "head" && text === "$> mkdir mental") {
+            this.hashmap.set("mental", "mental: ");
+            this.hashmap.set("head", "head: emotions mental");
+            consoleDialogue?.setText("");
+        } else if (
+            curDir === "head" &&
+            text === "$> cd mental" &&
+            this.hashmap.has("mental")
+        ) {
+            this.stack.push("mental");
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText("mental: ");
+        } else if (curDir === "head" && text === "$> cd emotions") {
+            this.stack.push("emotions");
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText("emotions: ");
+        } else if (curDir === "emotions" && text === "$> touch calm.sh") {
+            this.hashmap.set("emotions", "emotions: calm.sh");
+        } else if (curDir === "mental" && text === "$> touch knockout.sh") {
+            this.hashmap.set("mental", "mental: knockout.sh");
+        } else if (
+            curDir === "emotions" &&
+            this.hashmap.get("emotions") === "emotions: calm.sh" &&
+            text === "$> ./calm.sh"
+        ) {
+            this.calmFlag = true;
+        } else if (
+            curDir === "mental" &&
+            this.hashmap.get("mental") === "mental: knockout.sh" &&
+            text === "$> ./knockout.sh"
+        ) {
+            this.knockoutFlag = true;
+        }
+        if (this.knockoutFlag && this.calmFlag) {
+            console.log("win");
+            return { curDir: curDir, dialogue: consoleDialogue };
         }
         return { curDir: curDir, dialogue: consoleDialogue };
     };
