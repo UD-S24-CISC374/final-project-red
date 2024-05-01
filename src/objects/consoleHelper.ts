@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
 import { ShadesInterface } from "../interfaces/shadesInterface";
+import { RatHelperInterface } from "../interfaces/ratHelperInterface";
 
 export class ConsoleHelper {
     private stack: string[] = [];
@@ -86,11 +87,11 @@ export class ConsoleHelper {
         return { curDir: curDir, won: won3, dialogue: consoleDialogue };
     };
 
-     handleRatConsole = (
+    handleRatConsole = (
         text: string,
         fighting: boolean,
         curDir: string, 
-        won: boolean,
+        won2: boolean,
         mkDirTut: boolean,
         lsMkTest: boolean,
         cdTest: boolean,
@@ -99,7 +100,7 @@ export class ConsoleHelper {
         touchMyFile: boolean,
         createdFile: boolean,
         consoleDialogue?: Phaser.GameObjects.Text | undefined,
-    ): ConsoleHelperInterface => {
+    ): RatHelperInterface => {
         if (!fighting) {
             if (text === "$> mkdir Test" && curDir === "") {
                 mkDirTut = true; 
@@ -198,7 +199,7 @@ export class ConsoleHelper {
             text, 
             fighting,
             curDir,
-            won,
+            won2,
             mkDirTut,
             lsMkTest,
             cdTest,
@@ -208,7 +209,6 @@ export class ConsoleHelper {
             createdFile,
         }
     }
-};
 
     handleConsoleText = (
         text: string,
