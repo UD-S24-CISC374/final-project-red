@@ -6,32 +6,20 @@ export class TerminalManager {
 
     private eventEmitter: Phaser.Events.EventEmitter;
 
-    constructor(eventEmitter: Phaser.Events.EventEmitter, fighting: boolean) {
+    constructor(eventEmitter: Phaser.Events.EventEmitter) {
         this.eventEmitter = eventEmitter;
         this.inputElement = document.createElement("input");
         this.inputElement.type = "text";
 
         //styling
-        if (!fighting) {
-            this.inputElement.style.position = "fixed";
-            this.inputElement.style.bottom = "20px";
-            this.inputElement.style.left = "25%";
-            this.inputElement.style.width = "50%";
-            this.inputElement.style.height = "80px";
-            this.inputElement.style.border = "1px solid #ccc";
-            this.inputElement.style.backgroundColor = "#2D2E2C";
-            this.inputElement.style.color = "white";
-        }
-        if (fighting) {
-            this.inputElement.style.position = "fixed";
-            this.inputElement.style.bottom = "20px";
-            this.inputElement.style.left = "25%";
-            this.inputElement.style.width = "50%";
-            this.inputElement.style.height = "80px";
-            this.inputElement.style.border = "1px solid #ccc";
-            this.inputElement.style.backgroundColor = "#2D2E2C";
-            this.inputElement.style.color = "red";
-        }
+        this.inputElement.style.position = "fixed";
+        this.inputElement.style.bottom = "20px";
+        this.inputElement.style.left = "25%";
+        this.inputElement.style.width = "50%";
+        this.inputElement.style.height = "80px";
+        this.inputElement.style.border = "1px solid #ccc";
+        this.inputElement.style.backgroundColor = "#2D2E2C";
+        this.inputElement.style.color = "white";
 
         document.body.appendChild(this.inputElement);
 

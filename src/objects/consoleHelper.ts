@@ -14,6 +14,7 @@ export class ConsoleHelper {
     handleShadesBoss = (
         text: string,
         curDir: string,
+        won3: boolean,
         consoleDialogue?: Phaser.GameObjects.Text
     ): ShadesInterface => {
         if (!this.mapFillFlag) {
@@ -68,18 +69,20 @@ export class ConsoleHelper {
             text === "$> ./calm.sh"
         ) {
             this.calmFlag = true;
+            consoleDialogue?.setText("Executed calm.sh!!");
         } else if (
             curDir === "mental" &&
             this.hashmap.get("mental") === "mental: knockout.sh" &&
             text === "$> ./knockout.sh"
         ) {
             this.knockoutFlag = true;
+            consoleDialogue?.setText("Executed knockout.sh!!");
         }
         if (this.knockoutFlag && this.calmFlag) {
             console.log("win");
-            return { curDir: curDir, dialogue: consoleDialogue };
+            return { curDir: curDir, won: true, dialogue: consoleDialogue };
         }
-        return { curDir: curDir, dialogue: consoleDialogue };
+        return { curDir: curDir, won: won3, dialogue: consoleDialogue };
     };
 
     handleConsoleText = (

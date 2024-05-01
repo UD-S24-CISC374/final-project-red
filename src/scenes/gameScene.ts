@@ -21,6 +21,7 @@ export default class GameScene extends Phaser.Scene {
     private robo?: Phaser.Physics.Arcade.Sprite;
     private rugged_wizard?: Phaser.Physics.Arcade.Sprite;
     private smiley: Phaser.Physics.Arcade.Sprite;
+    private shades: Phaser.Physics.Arcade.Sprite;
 
     private smileyDialogue: Phaser.GameObjects.Text;
 
@@ -38,6 +39,7 @@ export default class GameScene extends Phaser.Scene {
     private cdLsTut: boolean = false;
     private foundFile: boolean = false;
     private won: boolean = false;
+    private won3: boolean = false;
     private directories: Directories = {
         fighting: this.fighting,
         curDir: this.curDir,
@@ -57,10 +59,12 @@ export default class GameScene extends Phaser.Scene {
     };
     private shadesInterfaceObj: ShadesInterface = {
         curDir: this.curDir,
+        won: this.won3,
         dialogue: this.consoleDialogue,
     };
     private playerHealth?: Phaser.GameObjects.Sprite;
     private rugWizHealth?: Phaser.GameObjects.Sprite;
+    private shadesHealth?: Phaser.GameObjects.Sprite;
     private battleMusic: Phaser.Sound.BaseSound;
 
     constructor() {
@@ -86,7 +90,7 @@ export default class GameScene extends Phaser.Scene {
             0
         );
 
-        //wall_layer!.setCollisionByProperty({ Collides: true });
+        wall_layer!.setCollisionByProperty({ Collides: true });
 
         //SPRITES -------
         const door = this.physics.add.image(750, 450, "door").setScale(0.18);
@@ -127,9 +131,11 @@ export default class GameScene extends Phaser.Scene {
         const shades_boss: Phaser.Physics.Arcade.Sprite = this.enemies
             .create(1250, 1970, "shades")
             .setScale(1);
+        this.shades = shades_boss;
         //const resourceful_rat: Phaser.Physics.Arcade.Sprite =
         this.enemies.create(1120, 1360, "resourceful_rat").setScale(1.2);
         this.physics.add.collider(this.wizard, rugged_wizard);
+        this.physics.add.collider(this.wizard, shades_boss);
         rugged_wizard.setImmovable(true);
         shades_boss.setImmovable(true);
         this.rugged_wizard = rugged_wizard;
@@ -143,10 +149,7 @@ export default class GameScene extends Phaser.Scene {
         });
         this.cursor = this.input.keyboard?.createCursorKeys();
 
-        this.terminalManager = new TerminalManager(
-            this.eventEmitter,
-            this.fighting
-        );
+        this.terminalManager = new TerminalManager(this.eventEmitter);
         this.anims.create({
             key: "shades_bounce",
             frames: this.anims.generateFrameNumbers("shades", {
@@ -202,8 +205,8 @@ export default class GameScene extends Phaser.Scene {
         );
         this.roboDialogue.setScrollFactor(0);
 
-        this.consoleDialogue = this.add.text(100, 160, "", {
-            fontSize: "24px",
+        this.consoleDialogue = this.add.text(100, 190, "", {
+            fontSize: "29px",
             color: "green",
             backgroundColor: "#000000",
         });
@@ -229,10 +232,21 @@ export default class GameScene extends Phaser.Scene {
             "hearts",
             0
         );
+        this.shadesHealth = this.add.sprite(
+            this.shades!.x,
+            this.shades!.y - 100,
+            "hearts",
+            0
+        );
         this.playerHealth.setScale(1.5);
         this.rugWizHealth.setScale(1.5);
+        this.shadesHealth.setScale(2.0);
 
-        this.battleMusic = this.sound.add("battleMusic", { loop: true });
+        this.battleMusic = this.sound.add("battleMusic", {
+            loop: true,
+            volume: 0.05,
+        });
+
         // hearts always visible
         // this.playerHealth.setVisible(false);
         // this.rugWizHealth.setVisible(false)
@@ -342,7 +356,7 @@ export default class GameScene extends Phaser.Scene {
                     );
                 else {
                     const tmp: string =
-                        "Your task: enter his emotions directory, create and call a calm.sh file\nenter his mental directory, create and call a knockout.sh file";
+                        "Your task: enter his emotions directory, create and call a calm.sh file\nIn his head directory make a 'mental' directory,\nenter it then create and call a knockout.sh file";
                     this.smileyDialogue.setText(tmp);
                 }
             } else {
@@ -364,11 +378,8 @@ export default class GameScene extends Phaser.Scene {
             this.fighting = true;
             this.curDir = "enemy";
             this.consoleDialogue?.setText("Enemy:");
-            this.terminalManager = new TerminalManager(
-                this.eventEmitter,
-                this.fighting
-            );
-        } else if (text == "$> cd boss" /*&& this.won*/) {
+            this.terminalManager = new TerminalManager(this.eventEmitter);
+        } else if (text == "$> cd boss" && this.won && !this.won3) {
             this.wizard?.setX(950);
             this.wizard?.setY(1970);
             this.smiley.setX(801);
@@ -378,6 +389,7 @@ export default class GameScene extends Phaser.Scene {
             this.consoleHelp.handleShadesBoss(
                 text,
                 this.curDir,
+                this.won3,
                 this.consoleDialogue
             );
             this.fightNumber = 3;
@@ -387,10 +399,19 @@ export default class GameScene extends Phaser.Scene {
                     this.shadesInterfaceObj = this.consoleHelp.handleShadesBoss(
                         text,
                         this.curDir!,
+                        this.won3,
                         this.consoleDialogue
                     );
                     this.curDir = this.shadesInterfaceObj.curDir;
+                    this.won3 = this.shadesInterfaceObj.won;
                     this.consoleDialogue = this.shadesInterfaceObj.dialogue;
+                    if (this.won3) {
+                        this.shadesHealth?.setFrame(4);
+                        this.fighting = false;
+                        this.anims.remove("shades_bounce");
+                        this.curDir = "";
+                        this.fightNumber = 0;
+                    }
                     break;
                 default:
                     this.ConsoleHelperObj = this.consoleHelp.handleConsoleText(
