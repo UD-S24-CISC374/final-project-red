@@ -54,7 +54,7 @@ export class NpcHelper {
                 }
                 if (foundFile) {
                     dialogue?.setText(
-                        "You found it! Type selfDestruct.sh to defeat the mage!"
+                        "You found it! Now we just need to call it.\nType ./selfDestruct.sh to defeat the mage!"
                     );
                 }
             }

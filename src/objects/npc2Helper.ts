@@ -64,7 +64,7 @@ export class Npc2Helper {
                 }
                 if (createdFile) {
                     dialogue?.setText(
-                        "Nice! Now just type ls to see your file, \nthen type turnOff.sh to defeat the Rat King!"
+                        "Nice! Now just type ls to see your file, \nthen call it to defeat the Rat King!"
                     );
                     won = true;
                 }

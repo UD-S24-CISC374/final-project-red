@@ -96,6 +96,7 @@ export default class GameScene extends Phaser.Scene {
         lsInTest: this.lsInTest,
         lsMyFile: this.lsMyFile,
         touchMyFile: this.touchMyFile,
+        playerHealth: this.playerHealth,
         createdFile: this.createdFile,
     };
     private playerHealth?: Phaser.GameObjects.Sprite;
@@ -524,6 +525,7 @@ export default class GameScene extends Phaser.Scene {
                 this.lsInTest,
                 this.lsMyFile,
                 this.touchMyFile,
+                this.playerHealth!,
                 this.createdFile
             );
             this.fightNumber = 12;
@@ -543,6 +545,7 @@ export default class GameScene extends Phaser.Scene {
                             this.lsInTest,
                             this.lsMyFile,
                             this.touchMyFile,
+                            this.playerHealth!,
                             this.createdFile
                         );
                     text = this.level2InterfaceObj.text;
