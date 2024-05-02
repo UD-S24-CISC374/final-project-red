@@ -194,6 +194,12 @@ export class ConsoleHelper {
                     "Off: turnOff.sh"
                 );
             }
+            if (text === "$> turnoff.sh") {
+                won2 = true;
+                consoleDialogue?.setText(
+                    ""
+                );
+            }
         }
         return {
             text, 
@@ -222,7 +228,7 @@ export class ConsoleHelper {
         won: boolean,
         consoleDialogue?: Phaser.GameObjects.Text
     ): ConsoleHelperInterface => {
-        if (!fighting) {
+        if (!fighting && !won) {
             if (text === "$> ls" && curDir === "") {
                 consoleDialogue?.setText("aboutMe");
                 lsTutorial = true;

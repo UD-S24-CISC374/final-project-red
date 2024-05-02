@@ -7,7 +7,7 @@ export class Npc2Helper {
     public handleHunterInteraction(
         fighting: boolean,
         curDir: string | undefined, 
-        won: boolean,
+        won2: boolean,
         mkDirTut: boolean,
         lsMkTest: boolean,
         cdTest: boolean,
@@ -17,13 +17,14 @@ export class Npc2Helper {
         createdFile: boolean,
         dialogue?: Phaser.GameObjects.Text | undefined,
     ): Directories {
-        if (!won) {
+        if (!won2) {
             if (!fighting) {
                 dialogue?.setText(
                     "Welcome! I need help defeating the Rat King.\nI'll teach you how to make a directory! Try 'mkdir Test'"
                     //mkDirTut
                 );
                 if (mkDirTut) {
+                    console.log("mkDirTut");
                     dialogue?.setText(
                         "Check if the new directory was created by listing everything. You learned this earlier!"
                     );

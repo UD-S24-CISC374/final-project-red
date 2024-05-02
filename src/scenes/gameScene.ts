@@ -6,6 +6,7 @@ import { ConsoleHelper } from "../objects/consoleHelper";
 import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
 import { ShadesInterface } from "../interfaces/shadesInterface";
 import { Npc2Helper } from "../objects/npc2Helper";
+import { RatHelperInterface } from "../interfaces/ratHelperInterface";
 
 //this.fighting, this.lsTutorial, this.cdTutorial, this.cdLsTut, this.cdBackTut, this.curDir, this.foundFile, this.won
 
@@ -50,6 +51,7 @@ export default class GameScene extends Phaser.Scene {
     private cdLsTut: boolean = false;
     private foundFile: boolean = false;
     private won: boolean = false;
+    private won2: boolean = false; 
     private won3: boolean = false;
     private mkDirTut: boolean = false;
     private lsMkTest: boolean = false;
@@ -58,7 +60,6 @@ export default class GameScene extends Phaser.Scene {
     private lsMyFile: boolean = false;
     private touchMyFile: boolean = false;
     private createdFile: boolean = false;
-    private won2: boolean = false; 
     private directories: Directories = {
         fighting: this.fighting,
         curDir: this.curDir,
@@ -81,6 +82,20 @@ export default class GameScene extends Phaser.Scene {
         won: this.won,
         consoleDialogue: this.consoleDialogue,
     };
+    private RatHelperObj: RatHelperInterface = {
+        text: "", 
+        fighting: this.fighting,
+        curDir: this.curDir!,
+        won2: this.won2,
+        mkDirTut: this.mkDirTut,
+        lsMkTest: this.lsMkTest,
+        cdTest: this.cdTest,
+        lsInTest: this.lsInTest,
+        lsMyFile: this.lsMyFile,
+        touchMyFile: this.touchMyFile,
+        createdFile: this.createdFile,
+        consoleDialogue: this.consoleDialogue,
+    }
     private shadesInterfaceObj: ShadesInterface = {
         curDir: this.curDir,
         won: this.won3,
@@ -458,6 +473,13 @@ export default class GameScene extends Phaser.Scene {
             this.curDir = "enemy";
             this.consoleDialogue?.setText("Enemy:");
             this.terminalManager = new TerminalManager(this.eventEmitter);
+        } else if (text == "$> cd rat" && this.won && !this.won2 && !this.won3) {
+            this.wizard?.setX(700);
+            this.wizard?.setY(1180);
+            this.fighting = true;
+            this.curDir = "rat";
+            this.consoleDialogue?.setText("Rat:");
+            this.fightNumber = 2;
         } else if (text == "$> cd boss" && this.won && !this.won3) {
             this.wizard?.setX(950);
             this.wizard?.setY(1970);
@@ -492,6 +514,34 @@ export default class GameScene extends Phaser.Scene {
                         this.fightNumber = 0;
                         this.door3.setImmovable(false);
                     }
+                    break;
+                case 2: 
+                    this.RatHelperObj = this.consoleHelp.handleRatConsole(
+                        text, 
+                        this.fighting,
+                        this.curDir = "", 
+                        this.won2,
+                        this.mkDirTut,
+                        this.lsMkTest,
+                        this.cdTest,
+                        this.lsInTest,
+                        this.lsMyFile,
+                        this.touchMyFile,
+                        this.createdFile,
+                        this.consoleDialogue
+                    );
+                    text = this.RatHelperObj.text;
+                    this.fighting = this.RatHelperObj.fighting;
+                    this.curDir = this.RatHelperObj.curDir;
+                    this.won2 = this.RatHelperObj.won2;
+                    this.mkDirTut = this.RatHelperObj.mkDirTut;
+                    this.lsMkTest = this.RatHelperObj.lsMkTest;
+                    this.cdTest = this.RatHelperObj.cdTest;
+                    this.lsInTest = this.RatHelperObj.lsInTest;
+                    this.lsMyFile = this.RatHelperObj.lsMyFile;
+                    this.touchMyFile = this.RatHelperObj.touchMyFile;
+                    this.createdFile = this.RatHelperObj.createdFile;
+                    this.consoleDialogue = this.RatHelperObj.consoleDialogue;
                     break;
                 default:
                     this.ConsoleHelperObj = this.consoleHelp.handleConsoleText(
