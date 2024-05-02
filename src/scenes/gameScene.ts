@@ -134,7 +134,6 @@ export default class GameScene extends Phaser.Scene {
 
         //SPRITES -------
         this.door1 = this.physics.add.image(750, 450, "door").setScale(0.2);
-
         this.door2 = this.physics.add.image(850, 960, "door").setScale(0.2);
         this.door3 = this.physics.add.image(1650, 2045, "door").setScale(0.2);
         this.wizard = this.physics.add.sprite(220, 375, "wizard").setScale(0.9);
@@ -262,7 +261,7 @@ export default class GameScene extends Phaser.Scene {
         this.evilDialogue.setScrollFactor(0);
 
         this.instructionDialogue = this.add.text(
-            100,
+            70,
             100,
             "Explore the map using the arrow keys\nand interact with NPCs by going near them - good luck!",
             {

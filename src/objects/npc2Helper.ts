@@ -30,7 +30,7 @@ export class Npc2Helper {
                 );
                 if (mkDirTut) {
                     dialogue?.setText(
-                        "Check if the new directory was created by listing everything. \nYou learned this earlier!"
+                        "Check if the new directory was created by listing everything.\nYou learned this earlier!"
                     );
                 }
                 if (lsMkTest) {
