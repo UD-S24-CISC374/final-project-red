@@ -5,19 +5,22 @@ import { NpcHelper } from "../objects/npcHelper";
 import { ConsoleHelper } from "../objects/consoleHelper";
 import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
 import { ShadesInterface } from "../interfaces/shadesInterface";
-
+import { Npc2Helper } from "../objects/npc2Helper";
+import { Level2Interface } from "../interfaces/level2Interface";
 //this.fighting, this.lsTutorial, this.cdTutorial, this.cdLsTut, this.cdBackTut, this.curDir, this.foundFile, this.won
 
 export default class GameScene extends Phaser.Scene {
     private cursor?: Phaser.Types.Input.Keyboard.CursorKeys;
     private terminalManager: TerminalManager;
     private handleNPC: NpcHelper;
+    private handleNPC2: Npc2Helper;
     private consoleHelp: ConsoleHelper;
 
     private NPCs: Phaser.Physics.Arcade.Group;
     private wizard?: Phaser.Physics.Arcade.Sprite;
     private robo?: Phaser.Physics.Arcade.Sprite;
     private smiley: Phaser.Physics.Arcade.Sprite;
+    private hunter: Phaser.Physics.Arcade.Sprite;
 
     private enemies: Phaser.Physics.Arcade.Group;
     private shades: Phaser.Physics.Arcade.Sprite;
@@ -45,7 +48,15 @@ export default class GameScene extends Phaser.Scene {
     private cdLsTut: boolean = false;
     private foundFile: boolean = false;
     private won: boolean = false;
+    private won2: boolean = false;
     private won3: boolean = false;
+    private mkDirTut: boolean = false;
+    private lsMkTest: boolean = false;
+    private cdTest: boolean = false;
+    private lsInTest: boolean = false;
+    private lsMyFile: boolean = false;
+    private touchMyFile: boolean = false;
+    private createdFile: boolean = false;
 
     private directories: Directories = {
         fighting: this.fighting,
@@ -71,9 +82,25 @@ export default class GameScene extends Phaser.Scene {
         shadesHealth: this.shadesHealth,
         dialogue: this.consoleDialogue,
     };
+    private level2InterfaceObj: Level2Interface = {
+        curDir: this.curDir,
+        won: this.won2,
+        dialogue: this.consoleDialogue,
+        text: "",
+        fighting: this.fighting,
+        mkDirTut: this.mkDirTut,
+        lsMkTest: this.lsMkTest,
+        cdTest: this.cdTest,
+        lsInTest: this.lsInTest,
+        lsMyFile: this.lsMyFile,
+        touchMyFile: this.touchMyFile,
+        createdFile: this.createdFile,
+    }
     private playerHealth?: Phaser.GameObjects.Sprite;
     private rugWizHealth?: Phaser.GameObjects.Sprite;
     private shadesHealth?: Phaser.GameObjects.Sprite;
+    private ratHealth?: Phaser.GameObjects.Sprite;
+
     private battleMusic: Phaser.Sound.BaseSound;
 
     constructor() {
@@ -85,6 +112,7 @@ export default class GameScene extends Phaser.Scene {
         //CLASSES --------
         this.handleNPC = new NpcHelper();
         this.consoleHelp = new ConsoleHelper();
+        this.handleNPC2 = new Npc2Helper();
 
         //MAP -------
         this.physics.world.setBounds(0, 0, 1900, 2400);
@@ -139,6 +167,7 @@ export default class GameScene extends Phaser.Scene {
         hunter.setImmovable(true);
         smiley.setImmovable(true);
         this.robo = robo;
+        this.hunter = hunter;
 
         this.enemies = this.physics.add.group();
         const rugged_wizard: Phaser.Physics.Arcade.Sprite = this.enemies
@@ -272,8 +301,15 @@ export default class GameScene extends Phaser.Scene {
             "hearts",
             0
         );
+        this.ratHealth = this.add.sprite(
+            this.shades!.x,
+            this.shades!.y - 100,
+            "hearts",
+            0
+        );
         this.playerHealth.setScale(1.5);
         this.rugWizHealth.setScale(1.5);
+        this.ratHealth.setScale(1.5);
         this.shadesHealth.setScale(2.0);
 
         this.battleMusic = this.sound.add("battleMusic", {
@@ -349,6 +385,7 @@ export default class GameScene extends Phaser.Scene {
             const npcPosition = this.robo.getCenter();
             const enemyPosition = this.rugged_wizard.getCenter();
             const smileyPosition = this.smiley.getCenter();
+            const hunterPosition = this.hunter.getCenter();
 
             const npcDistance = Phaser.Math.Distance.BetweenPoints(
                 playerPosition,
@@ -362,6 +399,10 @@ export default class GameScene extends Phaser.Scene {
                 playerPosition,
                 smileyPosition
             );
+            const hunterDistance = Phaser.Math.Distance.BetweenPoints(
+                playerPosition,
+                hunterPosition
+            )
             if (npcDistance < 100) {
                 this.directories = this.handleNPC.handleRoboInteraction(
                     this.fighting,
@@ -377,6 +418,7 @@ export default class GameScene extends Phaser.Scene {
                 this.fighting = this.directories.fighting;
                 this.curDir = this.directories.curDir;
                 this.roboDialogue = this.directories.dialogue;
+                this.fightNumber = 0;
             } else {
                 this.roboDialogue?.setText("");
             }
@@ -386,6 +428,26 @@ export default class GameScene extends Phaser.Scene {
                 this.handleRuggedInteraction();
             } else {
                 this.evilDialogue?.setText("");
+            }
+
+            if (hunterDistance < 100) {
+                this.fightNumber = 12;
+                this.directories = this.handleNPC2.handleHunterInteraction(
+                    this.fighting,
+                    this.curDir,
+                    this.won,
+                    this.mkDirTut,
+                    this.lsMkTest,
+                    this.cdTest,
+                    this.lsInTest,
+                    this.lsMyFile,
+                    this.touchMyFile,
+                    this.createdFile,
+                    this.roboDialogue
+                );
+                this.fighting = this.directories.fighting;
+                this.curDir = this.directories.curDir;
+                this.roboDialogue = this.directories.dialogue;
             }
             if (smileyDistance < 150) {
                 if (!this.fighting) {
@@ -439,8 +501,72 @@ export default class GameScene extends Phaser.Scene {
                 this.consoleDialogue
             );
             this.fightNumber = 3;
-        } else {
+        } else if (text == "$> cd rat" /*&& this.won*/ && !this.won2) {
+            this.wizard?.setX(950); //figure out
+            this.wizard?.setY(1300);
+            this.hunter.setX(860);
+            this.hunter.setY(1170);
+            this.fighting = true;
+            this.curDir = "rat";
+            this.consoleHelp.handleLevel2Console(
+                this.curDir!, 
+                this.won2,
+                this.consoleDialogue!,
+                text,
+                this.fighting,
+                this.mkDirTut,
+                this.lsMkTest,
+                this.cdTest,
+                this.lsInTest,
+                this.lsMyFile,
+                this.touchMyFile,
+                this.createdFile,
+            );
+            this.fightNumber = 12; } 
+            else {
+                     console.log("duck");
+                     console.log(this.fightNumber);
             switch (this.fightNumber) {
+                case 12:
+                    console.log("duck");
+                    this.level2InterfaceObj = this.consoleHelp.handleLevel2Console(
+                       this.curDir!, 
+                       this.won2,
+                       this.consoleDialogue!,
+                       text,
+                       this.fighting,
+                       this.mkDirTut,
+                       this.lsMkTest,
+                       this.cdTest,
+                       this.lsInTest,
+                       this.lsMyFile,
+                       this.touchMyFile,
+                       this.createdFile,
+                    );
+                    text = this.level2InterfaceObj.text;
+                    this.fighting = this.level2InterfaceObj.fighting;
+                    this.curDir = this.level2InterfaceObj.curDir;
+                    this.won2 = this.level2InterfaceObj.won;
+                    this.mkDirTut = this.level2InterfaceObj.mkDirTut;
+                    this.lsMkTest = this.level2InterfaceObj.lsMkTest;
+                    this.cdTest = this.level2InterfaceObj.cdTest;
+                    this.lsInTest = this.level2InterfaceObj.lsInTest;
+                    this.lsMyFile = this.level2InterfaceObj.lsMyFile;
+                    this.touchMyFile = this.level2InterfaceObj.touchMyFile;
+                    this.createdFile = this.level2InterfaceObj.createdFile;
+                    this.consoleDialogue = this.level2InterfaceObj.dialogue;
+                     if (this.won2) {
+                        this.ratHealth?.setFrame(4);
+                        this.fighting = false;
+                        this.curDir = "";
+                        this.fightNumber = 0;
+                        this.door2.setImmovable(false);
+                    }
+                    break;
+
+                case 2: 
+
+                    break;
                 case 3:
                     this.shadesInterfaceObj = this.consoleHelp.handleShadesBoss(
                         text,
