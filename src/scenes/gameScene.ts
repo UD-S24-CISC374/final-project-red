@@ -74,6 +74,7 @@ export default class GameScene extends Phaser.Scene {
         curDir: this.curDir!,
         foundFile: this.foundFile,
         won: this.won,
+        playerHealth: this.playerHealth,
         consoleDialogue: this.consoleDialogue,
     };
     private shadesInterfaceObj: ShadesInterface = {
@@ -601,6 +602,7 @@ export default class GameScene extends Phaser.Scene {
                         this.curDir!,
                         this.foundFile,
                         this.won,
+                        this.playerHealth!,
                         this.consoleDialogue
                     );
                     text = this.ConsoleHelperObj.text;

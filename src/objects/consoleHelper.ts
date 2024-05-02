@@ -247,6 +247,7 @@ export class ConsoleHelper {
         curDir: string,
         foundFile: boolean,
         won: boolean,
+        playerHealth: Phaser.GameObjects.Sprite,
         consoleDialogue?: Phaser.GameObjects.Text
     ): ConsoleHelperInterface => {
         if (!fighting) {
@@ -274,49 +275,59 @@ export class ConsoleHelper {
                     consoleDialogue?.setText(
                         "Enemy: evilStuff  evilThings evil.txt"
                     );
-                }
-                if (text === "$> cd evilStuff") {
+                } else if (text === "$> cd evilStuff") {
                     curDir = "evilStuff";
                     consoleDialogue?.setText("evilStuff:");
-                }
-                if (text === "$> cd evilThings") {
+                } else if (text === "$> cd evilThings") {
                     curDir = "evilThings";
                     consoleDialogue?.setText("evilThings:");
+                } else {
+                    playerHealth.setFrame(this.damageTaken);
+                    this.damageTaken += 1;
                 }
-            }
-            if (curDir === "evilStuff") {
+            } else if (curDir === "evilStuff") {
                 if (text === "$> ls") {
                     consoleDialogue?.setText("evilStuff: notHere.txt mage.txt");
-                }
-                if (text === "$> cd ..") {
+                } else if (text === "$> cd ..") {
                     curDir = "enemy";
                     consoleDialogue?.setText("enemy:");
+                } else {
+                    playerHealth.setFrame(this.damageTaken);
+                    this.damageTaken += 1;
                 }
-            }
-            if (curDir === "evilThings") {
+            } else if (curDir === "evilThings") {
                 if (text === "$> ls") {
                     consoleDialogue?.setText("evilThings: doNotLook");
-                }
-                if (text === "$> cd doNotLook") {
+                } else if (text === "$> cd doNotLook") {
                     curDir = "doNotLook";
                     consoleDialogue?.setText("doNotLook:");
-                }
-                if (text === "$> cd ..") {
+                } else if (text === "$> cd ..") {
                     curDir = "enemy";
                     consoleDialogue?.setText("enemy:");
+                } else {
+                    playerHealth.setFrame(this.damageTaken);
+                    this.damageTaken += 1;
                 }
-            }
-            if (curDir === "doNotLook") {
+            } else if (curDir === "doNotLook") {
                 if (text === "$> ls") {
                     consoleDialogue?.setText("doNotLook: selfDestruct.sh");
                     foundFile = true;
-                }
-                if (text === "$> selfDestruct.sh") {
+                } else if (text === "$> selfDestruct.sh") {
+                    this.damageTaken = 1;
                     won = true;
                     curDir = "";
                     consoleDialogue?.setText("");
+                } else {
+                    playerHealth.setFrame(this.damageTaken);
+                    this.damageTaken += 1;
                 }
+            } else {
+                playerHealth.setFrame(this.damageTaken);
+                this.damageTaken += 1;
             }
+        }
+        if (this.damageTaken === 4) {
+            curDir = "LOST GAME";
         }
         return {
             text,
@@ -328,6 +339,7 @@ export class ConsoleHelper {
             curDir,
             foundFile,
             won,
+            playerHealth,
             consoleDialogue,
         };
     };
