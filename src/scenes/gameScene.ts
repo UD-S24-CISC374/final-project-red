@@ -25,6 +25,7 @@ export default class GameScene extends Phaser.Scene {
     private enemies: Phaser.Physics.Arcade.Group;
     private shades: Phaser.Physics.Arcade.Sprite;
     private rugged_wizard?: Phaser.Physics.Arcade.Sprite;
+    private rat: Phaser.Physics.Arcade.Sprite;
 
     private door1: Phaser.Physics.Arcade.Image;
     private door2: Phaser.Physics.Arcade.Image;
@@ -131,7 +132,6 @@ export default class GameScene extends Phaser.Scene {
 
         //SPRITES -------
         this.door1 = this.physics.add.image(750, 450, "door").setScale(0.2);
-
         this.door2 = this.physics.add.image(850, 960, "door").setScale(0.2);
         this.door3 = this.physics.add.image(1650, 2045, "door").setScale(0.2);
         this.wizard = this.physics.add.sprite(220, 375, "wizard");
@@ -177,13 +177,13 @@ export default class GameScene extends Phaser.Scene {
             .create(1250, 1970, "shades")
             .setScale(1);
         this.shades = shades_boss;
-        //const resourceful_rat: Phaser.Physics.Arcade.Sprite =
-        this.enemies.create(1120, 1360, "resourceful_rat").setScale(1.2);
+        const rat: Phaser.Physics.Arcade.Sprite = this.enemies.create(1120, 1360, "resourceful_rat").setScale(1.2);
         this.physics.add.collider(this.wizard, rugged_wizard);
         this.physics.add.collider(this.wizard, shades_boss);
         rugged_wizard.setImmovable(true);
         shades_boss.setImmovable(true);
         this.rugged_wizard = rugged_wizard;
+        this.rat = rat
 
         //ANIMATION ------
         this.anims.create({
@@ -302,8 +302,8 @@ export default class GameScene extends Phaser.Scene {
             0
         );
         this.ratHealth = this.add.sprite(
-            this.shades!.x,
-            this.shades!.y - 100,
+            this.rat!.x,
+            this.rat!.y - 50,
             "hearts",
             0
         );
