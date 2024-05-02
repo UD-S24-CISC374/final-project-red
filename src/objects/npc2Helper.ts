@@ -6,7 +6,7 @@ export class Npc2Helper {
 
     public handleHunterInteraction(
         fighting: boolean,
-        curDir: string | undefined, 
+        curDir: string | undefined,
         won: boolean,
         mkDirTut: boolean,
         lsMkTest: boolean,
@@ -15,7 +15,7 @@ export class Npc2Helper {
         lsMyFile: boolean,
         touchMyFile: boolean,
         createdFile: boolean,
-        dialogue?: Phaser.GameObjects.Text | undefined,
+        dialogue?: Phaser.GameObjects.Text | undefined
     ): Directories {
         if (won) {
             dialogue?.setText(
@@ -26,7 +26,7 @@ export class Npc2Helper {
         } else {
             if (!fighting) {
                 dialogue?.setText(
-                    "Welcome! I need help defeating the Rat King.\nI'll teach you how to make a directory! Try 'mkdir Test'"
+                    "Welcome! I need help defeating the Rat King.\nI'll teach you how to make a directory! Try 'ls' and then 'mkdir Test'"
                 );
                 if (mkDirTut) {
                     dialogue?.setText(
@@ -35,12 +35,12 @@ export class Npc2Helper {
                 }
                 if (lsMkTest) {
                     dialogue?.setText(
-                        "There's your new directory Test!\nDo you remember how to move into directories? Move into Test"
+                        "There's your new directory Test! Do you remember how to move into directories? \nMove into Test"
                     );
                 }
                 if (cdTest) {
                     dialogue?.setText(
-                        "List everything in this directory.\nYou'll see it's empty - I'll show you how to change that!"
+                        "List everything in this directory. You'll see it's empty - \nI'll show you how to change that!"
                     );
                 }
                 if (lsInTest) {
@@ -49,31 +49,28 @@ export class Npc2Helper {
                     );
                 }
                 if (lsMyFile) {
-                    dialogue?.setText(
-                        "Type ls to see your new file!"
-                    )
+                    dialogue?.setText("Type ls to see your new file!");
                 }
                 if (touchMyFile) {
                     dialogue?.setText(
-                        "Cool, now you know how to create files!\nI think I've prepared you to take on the Rat King. Type cd rat to start your battle!"
-                    )
+                        "Cool, now you know how to create files!\nI think I've prepared you to take on the Rat King. \nType cd rat to start your battle!"
+                    );
                 }
-            }
-            else {
+            } else {
                 if (!createdFile) {
                     dialogue?.setText(
-                        "Create a directory called Core\nInisde Core, create a file called 'turnOff.sh'"
+                        "Your task: Create a directory called Core\nInisde Core, create a file called 'turnOff.sh'"
                     );
                 }
                 if (createdFile) {
                     dialogue?.setText(
-                        "Nice! Now just type ls to see your file, then type turnOff.sh to defeat the Rat King!"
+                        "Nice! Now just type ls to see your file, \nthen call it to defeat the Rat King!"
                     );
                     won = true;
+                }
             }
         }
-    } 
-    return {
+        return {
             fighting,
             curDir,
             dialogue,

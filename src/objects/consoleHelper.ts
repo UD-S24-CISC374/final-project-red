@@ -113,7 +113,7 @@ export class ConsoleHelper {
         if (this.knockoutFlag && this.calmFlag) {
             this.hashmap.clear();
             this.stack = [];
-            this.damageTaken = 1;
+            //this.damageTaken = 1;
             this.damageDealt = 1;
             return {
                 curDir: curDir,
@@ -136,7 +136,7 @@ export class ConsoleHelper {
         curDir: string,
         won2: boolean,
         consoleDialogue: Phaser.GameObjects.Text,
-        text: string, 
+        text: string,
         fighting: boolean,
         mkDirTut: boolean,
         lsMkTest: boolean,
@@ -144,92 +144,90 @@ export class ConsoleHelper {
         lsInTest: boolean,
         lsMyFile: boolean,
         touchMyFile: boolean,
-        createdFile: boolean,
+        playerHealth: Phaser.GameObjects.Sprite,
+        createdFile: boolean
     ): Level2Interface => {
         if (!fighting) {
-            if (text === "$> mkdir Test" && curDir === "") {
-                consoleDialogue.setText("Home: ");
-                mkDirTut = true; 
-            }
-            if (text === "$> ls" && curDir === "") {
-                consoleDialogue.setText("Home: Test");
-                lsMkTest = true;
-            }
-            if (text === "$> cd Test") {
-                consoleDialogue.setText("Test:");
-                curDir = "test";
-                cdTest = true;
-            }
-            if (text === "$> ls" && curDir === "test" && !lsMyFile) {
-                consoleDialogue.setText("Test:");
-                lsInTest = true;
-            }
-            if (text === "$> touch myFile.txt") {
-                consoleDialogue.setText("Test:");
-                lsMyFile = true;
-            }
-            if (text === "$> ls" && curDir === "test" && lsMyFile) {
-                consoleDialogue.setText("Test: myFile.txt")
-                touchMyFile = true; 
-            }                
-            if (text === "$> cd rat") { 
-                if (touchMyFile) {
-                    console.log(touchMyFile)
+            if (curDir === "") {
+                if (text === "$> ls") {
+                    curDir = "home";
+                    consoleDialogue.setText("Home: ");
                 }
-             //   fighting = true;
+            } else if (curDir === "home") {
+                if (text === "$> mkdir Test") {
+                    consoleDialogue.setText("Home: ");
+                    mkDirTut = true;
+                }
+                if (text === "$> ls" && !mkDirTut) {
+                    consoleDialogue.setText("Home: ");
+                }
+                if (text === "$> ls" && mkDirTut) {
+                    consoleDialogue.setText("Home: Test");
+                    lsMkTest = true;
+                }
+                if (text === "$> cd Test" && mkDirTut) {
+                    consoleDialogue.setText("Test:");
+                    curDir = "test";
+                    cdTest = true;
+                }
+            } else if (curDir === "test") {
+                if (text === "$> ls" && !lsMyFile) {
+                    consoleDialogue.setText("Test:");
+                    lsInTest = true;
+                }
+                if (text === "$> touch myFile.txt") {
+                    consoleDialogue.setText("Test:");
+                    lsMyFile = true;
+                }
+                if (text === "$> ls" && lsMyFile) {
+                    consoleDialogue.setText("Test: myFile.txt");
+                    touchMyFile = true;
+                }
+            }
+            if (text === "$> cd rat") {
+                if (touchMyFile) {
+                    console.log(touchMyFile);
+                }
+                //   fighting = true;
                 curDir = "rat";
             }
         } else {
-            console.log(curDir);
-            console.log(consoleDialogue);
             if (text === "$> ls" && curDir === "rat") {
-                consoleDialogue.setText(
-                    "Rat: "
-                );
-            }
-            if (text === "$> mkdir Core") {
-                consoleDialogue.setText(
-                    "Rat: "
-                );
+                consoleDialogue.setText("Rat: ");
+            } else if (text === "$> mkdir Core") {
+                consoleDialogue.setText("Rat: ");
                 curDir = "rat-core";
-            }
-            if (text === "$> ls" && curDir === "rat-core"){
-                consoleDialogue.setText(
-                   "Rat: Core" 
-                );
-            }
-            if (text === "$> cd Core") {
-                consoleDialogue.setText(
-                    "Core:" 
-                );
+            } else if (text === "$> ls" && curDir === "rat-core") {
+                consoleDialogue.setText("Rat: Core");
+            } else if (text === "$> cd Core") {
+                consoleDialogue.setText("Core:");
                 curDir = "core";
-            }
-            if (text === "$> ls" && curDir === "core") {
-                consoleDialogue.setText(
-                    "Core:" 
-                );
-            }
-            if (text === "$> touch turnOff.sh" && curDir === "core") {
+            } else if (text === "$> ls" && curDir === "core" && !createdFile) {
+                consoleDialogue.setText("Core:");
+            } else if (text === "$> touch turnOff.sh" && curDir === "core") {
                 createdFile = true;
                 curDir = "core";
-            }
-            if (text === "$> ls" && curDir === "core" && createdFile) {
-                consoleDialogue.setText(
-                    "Core: turnOff.sh"
-                );
-            }
-            if (text === "$> turnOff.sh") {
+            } else if (text === "$> ls" && curDir === "core" && createdFile) {
+                consoleDialogue.setText("Core: turnOff.sh");
+            } else if (text === "$> ./turnOff.sh") {
                 won2 = true;
-                consoleDialogue.setText(
-                    ""
-                );
+                consoleDialogue.setText("");
+            } else if (text === "cd .." && curDir === "core") {
+                curDir = "rate-core";
+                consoleDialogue.setText("Rat: Core");
+            } else if (text !== "$> cd rat") {
+                playerHealth.setFrame(this.damageTaken);
+                this.damageTaken += 1;
+            }
+            if (this.damageTaken === 4) {
+                curDir = "LOST GAME";
             }
         }
         return {
             curDir,
             won: won2,
             dialogue: consoleDialogue,
-            text, 
+            text,
             fighting,
             mkDirTut,
             lsMkTest,
@@ -237,9 +235,10 @@ export class ConsoleHelper {
             lsInTest,
             lsMyFile,
             touchMyFile,
+            playerHealth,
             createdFile,
-        }
-    }
+        };
+    };
     handleConsoleText = (
         text: string,
         fighting: boolean,
@@ -250,6 +249,7 @@ export class ConsoleHelper {
         curDir: string,
         foundFile: boolean,
         won: boolean,
+        playerHealth: Phaser.GameObjects.Sprite,
         consoleDialogue?: Phaser.GameObjects.Text
     ): ConsoleHelperInterface => {
         if (!fighting) {
@@ -275,50 +275,61 @@ export class ConsoleHelper {
                 // enemy home directory
                 if (text === "$> ls") {
                     consoleDialogue?.setText(
-                        "Enemy: evilStuff  evilThings evil.txt"
+                        "Enemy: evilStuff,  evilThings, evil.txt"
                     );
-                }
-                if (text === "$> cd evilStuff") {
+                } else if (text === "$> cd evilStuff") {
                     curDir = "evilStuff";
                     consoleDialogue?.setText("evilStuff:");
-                }
-                if (text === "$> cd evilThings") {
+                } else if (text === "$> cd evilThings") {
                     curDir = "evilThings";
                     consoleDialogue?.setText("evilThings:");
+                } else {
+                    playerHealth.setFrame(this.damageTaken);
+                    this.damageTaken += 1;
                 }
-            }
-            if (curDir === "evilStuff") {
+            } else if (curDir === "evilStuff") {
                 if (text === "$> ls") {
                     consoleDialogue?.setText("evilStuff: notHere.txt mage.txt");
-                }
-                if (text === "$> cd ..") {
+                } else if (text === "$> cd ..") {
                     curDir = "enemy";
                     consoleDialogue?.setText("enemy:");
+                } else {
+                    playerHealth.setFrame(this.damageTaken);
+                    this.damageTaken += 1;
                 }
-            }
-            if (curDir === "evilThings") {
+            } else if (curDir === "evilThings") {
                 if (text === "$> ls") {
-                    consoleDialogue?.setText("evilThings: doNotLook");
-                }
-                if (text === "$> cd doNotLook") {
+                    consoleDialogue?.setText("evilThings: maybeHere");
+                } else if (text === "$> cd maybeHere") {
                     curDir = "doNotLook";
-                    consoleDialogue?.setText("doNotLook:");
-                }
-                if (text === "$> cd ..") {
+                    consoleDialogue?.setText("maybeHere:");
+                } else if (text === "$> cd ..") {
                     curDir = "enemy";
-                    consoleDialogue?.setText("enemy:");
+                    consoleDialogue?.setText("Enemy:");
+                } else {
+                    playerHealth.setFrame(this.damageTaken);
+                    this.damageTaken += 1;
                 }
-            }
-            if (curDir === "doNotLook") {
+            } else if (curDir === "doNotLook") {
                 if (text === "$> ls") {
-                    consoleDialogue?.setText("doNotLook: selfDestruct.sh");
+                    consoleDialogue?.setText("maybeHere: selfDestruct.sh");
                     foundFile = true;
-                }
-                if (text === "$> selfDestruct.sh") {
+                } else if (text === "$> ./selfDestruct.sh") {
+                    this.damageTaken = 1;
                     won = true;
+                    curDir = "";
                     consoleDialogue?.setText("");
+                } else {
+                    playerHealth.setFrame(this.damageTaken);
+                    this.damageTaken += 1;
                 }
+            } else {
+                playerHealth.setFrame(this.damageTaken);
+                this.damageTaken += 1;
             }
+        }
+        if (this.damageTaken === 4) {
+            curDir = "LOST GAME";
         }
         return {
             text,
@@ -330,6 +341,7 @@ export class ConsoleHelper {
             curDir,
             foundFile,
             won,
+            playerHealth,
             consoleDialogue,
         };
     };

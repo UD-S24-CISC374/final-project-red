@@ -41,7 +41,7 @@ export class NpcHelper {
                 }
                 if (cdBackTut) {
                     dialogue?.setText(
-                        "Great - we'll learn more later!\nYou are ready to take on your first enemy! Type 'cd enemy'"
+                        "Great - we'll learn more later!\nYou are ready to take on your first enemy!\nFair warning, any typos during combat will cause damage\nType 'cd enemy'"
                     );
                 }
             }
@@ -54,13 +54,13 @@ export class NpcHelper {
                 }
                 if (foundFile) {
                     dialogue?.setText(
-                        "You found it! Type selfDestruct.sh to defeat the mage!"
+                        "You found it! Now we just need to call it.\nType ./selfDestruct.sh to defeat the mage!"
                     );
                 }
             }
         } else {
             dialogue?.setText(
-                "You beat the evil mage! Now you can explore past him!"
+                "You beat the evil mage! Now you can explore past him!\nTry pushing that door now."
             );
             curDir = "";
             fighting = false;
