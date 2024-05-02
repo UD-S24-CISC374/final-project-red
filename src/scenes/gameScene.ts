@@ -388,11 +388,17 @@ export default class GameScene extends Phaser.Scene {
                 this.evilDialogue?.setText("");
             }
             if (smileyDistance < 150) {
-                if (!this.fighting)
-                    this.smileyDialogue.setText(
-                        "Shades seems to be really 'triggered' today, mind smacking some sense into him?\nType 'cd boss' to confront him."
-                    );
-                else {
+                if (!this.fighting) {
+                    if (!this.won3) {
+                        this.smileyDialogue.setText(
+                            "Shades seems to be really 'triggered' today, mind smacking some sense into him?\nType 'cd boss' to confront him."
+                        );
+                    } else {
+                        this.smileyDialogue.setText(
+                            "Don't worry about him he chillen now...\nbut anyway I don't know if it's best to keep exploring this dungeon fleshy dude.\nMy boss will get angry at you."
+                        );
+                    }
+                } else {
                     const tmp: string =
                         "Your task: enter his emotions directory, create and call a calm.sh file\nIn his head directory make a 'mental' directory,\nenter it then create and call a knockout.sh file";
                     this.smileyDialogue.setText(tmp);
@@ -449,10 +455,11 @@ export default class GameScene extends Phaser.Scene {
                     this.consoleDialogue = this.shadesInterfaceObj.dialogue;
 
                     if (this.won3) {
-                        this.shadesHealth?.setFrame(4);
+                        this.shadesHealth?.setFrame(3);
                         this.fighting = false;
                         this.anims.remove("shades_bounce");
                         this.curDir = "";
+                        this.consoleDialogue?.setText("");
                         this.fightNumber = 0;
                         this.door3.setImmovable(false);
                     }

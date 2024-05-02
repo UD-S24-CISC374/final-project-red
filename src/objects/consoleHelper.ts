@@ -8,7 +8,8 @@ export class ConsoleHelper {
     private hashMapFillFlag: boolean = false;
     private calmFlag: boolean = false;
     private knockoutFlag: boolean = false;
-    private damage: number = 1;
+    private damageTaken: number = 1;
+    private damageDealt: number = 1;
 
     constructor() {}
 
@@ -49,7 +50,9 @@ export class ConsoleHelper {
         } else if (curDir === "head" && text === "$> mkdir mental") {
             this.hashmap.set("mental", "mental: ");
             this.hashmap.set("head", "head: emotions mental");
-            consoleDialogue?.setText("");
+            consoleDialogue?.setText(this.hashmap.get("head")!);
+            shadesHealth.setFrame(this.damageDealt);
+            this.damageDealt += 1;
         } else if (
             curDir === "head" &&
             text === "$> cd mental" &&
@@ -72,7 +75,9 @@ export class ConsoleHelper {
             text === "$> ./calm.sh"
         ) {
             this.calmFlag = true;
-            consoleDialogue?.setText("Executed calm.sh!!");
+            shadesHealth.setFrame(this.damageDealt);
+            this.damageDealt += 1;
+            consoleDialogue?.setText("Executed calm.sh!");
         } else if (
             curDir === "mental" &&
             this.hashmap.get("mental") === "mental: knockout.sh" &&
@@ -80,17 +85,20 @@ export class ConsoleHelper {
         ) {
             this.knockoutFlag = true;
             consoleDialogue?.setText("Executed knockout.sh!!");
+            shadesHealth.setFrame(this.damageDealt);
+            this.damageDealt += 1;
         } else {
-            playerHealth.setFrame(this.damage);
-            this.damage += 1;
-            if (this.damage === 4) {
+            playerHealth.setFrame(this.damageTaken);
+            this.damageTaken += 1;
+            if (this.damageTaken === 4) {
                 curDir = "LOST GAME";
             }
         }
         if (this.knockoutFlag && this.calmFlag) {
             this.hashmap.clear();
             this.stack = [];
-            this.damage = 1;
+            this.damageTaken = 1;
+            this.damageDealt = 1;
             return {
                 curDir: curDir,
                 won: true,
