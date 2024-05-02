@@ -8,6 +8,7 @@ export class ConsoleHelper {
     private hashMapFillFlag: boolean = false;
     private calmFlag: boolean = false;
     private knockoutFlag: boolean = false;
+    private damage: number = 1;
 
     constructor() {}
 
@@ -15,6 +16,8 @@ export class ConsoleHelper {
         text: string,
         curDir: string,
         won3: boolean,
+        playerHealth: Phaser.GameObjects.Sprite,
+        shadesHealth: Phaser.GameObjects.Sprite,
         consoleDialogue?: Phaser.GameObjects.Text
     ): ShadesInterface => {
         if (!this.hashMapFillFlag) {
@@ -77,13 +80,29 @@ export class ConsoleHelper {
         ) {
             this.knockoutFlag = true;
             consoleDialogue?.setText("Executed knockout.sh!!");
+        } else {
+            playerHealth.setFrame(this.damage);
+            this.damage += 1;
         }
         if (this.knockoutFlag && this.calmFlag) {
             this.hashmap.clear();
             this.stack = [];
-            return { curDir: curDir, won: true, dialogue: consoleDialogue };
+            this.damage = 1;
+            return {
+                curDir: curDir,
+                won: true,
+                playerHealth: playerHealth,
+                shadesHealth: shadesHealth,
+                dialogue: consoleDialogue,
+            };
         }
-        return { curDir: curDir, won: won3, dialogue: consoleDialogue };
+        return {
+            curDir: curDir,
+            won: won3,
+            playerHealth: playerHealth,
+            shadesHealth: shadesHealth,
+            dialogue: consoleDialogue,
+        };
     };
 
     handleConsoleText = (

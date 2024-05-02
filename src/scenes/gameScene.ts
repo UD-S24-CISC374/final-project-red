@@ -35,6 +35,7 @@ export default class GameScene extends Phaser.Scene {
     private userInput: string = "";
     private fighting: boolean = false;
     private fightNumber: number = 0;
+
     private eventEmitter = new Phaser.Events.EventEmitter();
     private lsTutorial: boolean = false;
     private cdTutorial: boolean = false;
@@ -66,6 +67,8 @@ export default class GameScene extends Phaser.Scene {
     private shadesInterfaceObj: ShadesInterface = {
         curDir: this.curDir,
         won: this.won3,
+        playerHealth: this.playerHealth,
+        shadesHealth: this.shadesHealth,
         dialogue: this.consoleDialogue,
     };
     private playerHealth?: Phaser.GameObjects.Sprite;
@@ -411,7 +414,7 @@ export default class GameScene extends Phaser.Scene {
             this.curDir = "enemy";
             this.consoleDialogue?.setText("Enemy:");
             this.terminalManager = new TerminalManager(this.eventEmitter);
-        } else if (text == "$> cd boss" && this.won && !this.won3) {
+        } else if (text == "$> cd boss" /*&& this.won*/ && !this.won3) {
             this.wizard?.setX(950);
             this.wizard?.setY(1970);
             this.smiley.setX(801);
@@ -419,9 +422,11 @@ export default class GameScene extends Phaser.Scene {
             this.fighting = true;
             this.curDir = "boss";
             this.consoleHelp.handleShadesBoss(
-                text,
+                "$> ls",
                 this.curDir,
                 this.won3,
+                this.playerHealth!,
+                this.shadesHealth!,
                 this.consoleDialogue
             );
             this.fightNumber = 3;
@@ -432,11 +437,14 @@ export default class GameScene extends Phaser.Scene {
                         text,
                         this.curDir!,
                         this.won3,
+                        this.playerHealth!,
+                        this.shadesHealth!,
                         this.consoleDialogue
                     );
                     this.curDir = this.shadesInterfaceObj.curDir;
                     this.won3 = this.shadesInterfaceObj.won;
                     this.consoleDialogue = this.shadesInterfaceObj.dialogue;
+
                     if (this.won3) {
                         this.shadesHealth?.setFrame(4);
                         this.fighting = false;
