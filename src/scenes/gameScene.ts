@@ -156,8 +156,26 @@ export default class GameScene extends Phaser.Scene {
         //ANIMATION ------
         this.anims.create({
             key: "idle",
-            frames: [{ key: "wizard", frame: 0 }],
-            frameRate: 1,
+            frames: [{ key: "wizard", frame: 2 }],
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: "right",
+            frames: this.anims.generateFrameNumbers("wizard", {
+                start: 0,
+                end: 1,
+            }),
+            frameRate: 7,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: "left",
+            frames: this.anims.generateFrameNumbers("wizard", {
+                start: 3,
+                end: 4,
+            }),
+            frameRate: 7,
             repeat: -1,
         });
         this.cursor = this.input.keyboard?.createCursorKeys();
@@ -284,17 +302,21 @@ export default class GameScene extends Phaser.Scene {
         if (!this.fighting) {
             this.battleMusic.pause();
             if (this.cursor.left.isDown) {
+                this.wizard?.setVelocityY(0);
                 this.wizard?.setVelocityX(-260);
-                //this.wizard?.anims.play("left", true);
+                this.wizard?.anims.play("left", true);
             } else if (this.cursor.right.isDown) {
+                this.wizard?.setVelocityY(0);
                 this.wizard?.setVelocityX(260);
-                //this.wizard?.anims.play("right", true);
+                this.wizard?.anims.play("right", true);
             } else if (this.cursor.up.isDown) {
+                this.wizard?.setVelocityX(0);
                 this.wizard?.setVelocityY(-260);
-                //this.wizard?.anims.play("turn", true);
+                this.wizard?.anims.play("right", true);
             } else if (this.cursor.down.isDown) {
+                this.wizard?.setVelocityX(0);
                 this.wizard?.setVelocityY(260);
-                //this.wizard?.anims.play("turn", true);
+                this.wizard?.anims.play("left", true);
             } else {
                 this.wizard?.setVelocityX(0);
                 this.wizard?.setVelocityY(0);
