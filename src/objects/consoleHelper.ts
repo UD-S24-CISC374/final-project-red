@@ -8,6 +8,8 @@ export class ConsoleHelper {
     private hashMapFillFlag: boolean = false;
     private calmFlag: boolean = false;
     private knockoutFlag: boolean = false;
+    private damageTaken: number = 1;
+    private damageDealt: number = 1;
 
     constructor() {}
 
@@ -15,13 +17,18 @@ export class ConsoleHelper {
         text: string,
         curDir: string,
         won3: boolean,
+        playerHealth: Phaser.GameObjects.Sprite,
+        shadesHealth: Phaser.GameObjects.Sprite,
         consoleDialogue?: Phaser.GameObjects.Text
     ): ShadesInterface => {
         if (!this.hashMapFillFlag) {
-            this.hashmap.set("boss", "boss: shades.txt cartridge arms legs");
-            this.hashmap.set("cartridge", "cartridge: head shell powder");
+            this.hashmap.set("boss", "boss: shades.txt, cartridge, arms, legs");
+            this.hashmap.set("cartridge", "cartridge: head, shell");
             this.hashmap.set("head", "head: emotions");
             this.hashmap.set("emotions", "emotions: ");
+            this.hashmap.set("arms", "arms: left.txt, right.txt: ");
+            this.hashmap.set("legs", "legs: left_leg.txt, right_leg.txt ");
+            this.hashmap.set("shell", "shell: powder.txt, metal.txt");
             this.stack.push("boss");
             this.hashMapFillFlag = true;
             console.log(this.hashmap);
@@ -46,7 +53,9 @@ export class ConsoleHelper {
         } else if (curDir === "head" && text === "$> mkdir mental") {
             this.hashmap.set("mental", "mental: ");
             this.hashmap.set("head", "head: emotions mental");
-            consoleDialogue?.setText("");
+            consoleDialogue?.setText(this.hashmap.get("head")!);
+            shadesHealth.setFrame(this.damageDealt);
+            this.damageDealt += 1;
         } else if (
             curDir === "head" &&
             text === "$> cd mental" &&
@@ -69,7 +78,9 @@ export class ConsoleHelper {
             text === "$> ./calm.sh"
         ) {
             this.calmFlag = true;
-            consoleDialogue?.setText("Executed calm.sh!!");
+            shadesHealth.setFrame(this.damageDealt);
+            this.damageDealt += 1;
+            consoleDialogue?.setText("Executed calm.sh!");
         } else if (
             curDir === "mental" &&
             this.hashmap.get("mental") === "mental: knockout.sh" &&
@@ -77,13 +88,47 @@ export class ConsoleHelper {
         ) {
             this.knockoutFlag = true;
             consoleDialogue?.setText("Executed knockout.sh!!");
+            shadesHealth.setFrame(this.damageDealt);
+            this.damageDealt += 1;
+        } else if (curDir === "boss" && text === "$> cd arms") {
+            this.stack.push("arms");
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText("arms: ");
+        } else if (curDir === "boss" && text === "$> cd legs") {
+            this.stack.push("legs");
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText("legs: ");
+        } else if (curDir === "cartridge" && text === "$> cd shell") {
+            this.stack.push("shell");
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText("shell: ");
+        } else {
+            playerHealth.setFrame(this.damageTaken);
+            this.damageTaken += 1;
+            if (this.damageTaken === 4) {
+                curDir = "LOST GAME";
+            }
         }
         if (this.knockoutFlag && this.calmFlag) {
             this.hashmap.clear();
             this.stack = [];
-            return { curDir: curDir, won: true, dialogue: consoleDialogue };
+            this.damageTaken = 1;
+            this.damageDealt = 1;
+            return {
+                curDir: curDir,
+                won: true,
+                playerHealth: playerHealth,
+                shadesHealth: shadesHealth,
+                dialogue: consoleDialogue,
+            };
         }
-        return { curDir: curDir, won: won3, dialogue: consoleDialogue };
+        return {
+            curDir: curDir,
+            won: won3,
+            playerHealth: playerHealth,
+            shadesHealth: shadesHealth,
+            dialogue: consoleDialogue,
+        };
     };
 
     handleConsoleText = (

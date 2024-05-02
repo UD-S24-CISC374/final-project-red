@@ -8,7 +8,6 @@ export default class PreloadScene extends Phaser.Scene {
     preload() {
         this.load.image("startBackground", "assets/startBackground.png");
         this.load.image("startBtn", "assets/startBtn.png");
-        //this.load.image("wizard", "assets/cultistIdle.png");
         this.load.image("platform", "assets/dungeonFloor.png");
         this.load.image("background", "assets/background.png");
         this.load.image("robo_guy", "assets/robo.png");
@@ -19,10 +18,6 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image("resourceful_rat", "assets/resourceful_rat.png");
         this.load.image("hunter", "assets/Hunter.png");
         this.load.tilemapTiledJSON("dungeon", "assets/DungeonMap.json");
-        this.load.spritesheet("hearts", "assets/hearts.png", {
-            frameWidth: 32,
-            frameHeight: 15,
-        });
         this.load.spritesheet("shades", "assets/shades_sheet.png", {
             frameWidth: 129,
             frameHeight: 162,
@@ -32,8 +27,8 @@ export default class PreloadScene extends Phaser.Scene {
             frameHeight: 164,
         });
         this.load.spritesheet("hearts", "assets/hearts.png", {
-            frameWidth: 32,
-            frameHeight: 15,
+            frameWidth: 33,
+            frameHeight: 19.25,
         });
         this.load.spritesheet("wizard", "assets/cultist_sheet.png", {
             frameWidth: 48,
