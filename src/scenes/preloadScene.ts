@@ -8,7 +8,7 @@ export default class PreloadScene extends Phaser.Scene {
     preload() {
         this.load.image("startBackground", "assets/startBackground.png");
         this.load.image("startBtn", "assets/startBtn.png");
-        this.load.image("wizard", "assets/cultistIdle.png");
+        //this.load.image("wizard", "assets/cultistIdle.png");
         this.load.image("platform", "assets/dungeonFloor.png");
         this.load.image("background", "assets/background.png");
         this.load.image("robo_guy", "assets/robo.png");
@@ -34,6 +34,10 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.spritesheet("hearts", "assets/hearts.png", {
             frameWidth: 32,
             frameHeight: 15,
+        });
+        this.load.spritesheet("wizard", "assets/cultist_sheet.png", {
+            frameWidth: 48,
+            frameHeight: 70,
         });
         this.load.image("creditsBtn", "assets/credits-btn.png");
         this.load.image("controlsBtn", "assets/controlsBtn.png");
