@@ -105,6 +105,7 @@ export default class GameScene extends Phaser.Scene {
     private ratHealth?: Phaser.GameObjects.Sprite;
 
     private battleMusic: Phaser.Sound.BaseSound;
+    private ambientMusic: Phaser.Sound.BaseSound;
 
     constructor() {
         super({ key: "GameScene" });
@@ -164,6 +165,7 @@ export default class GameScene extends Phaser.Scene {
             1770,
             "smiley"
         ).setScale(1);
+        this.wizard.setScale(0.8);
         this.physics.add.collider(this.wizard, this.NPCs);
         robo.setImmovable(true);
         hunter.setImmovable(true);
@@ -320,6 +322,11 @@ export default class GameScene extends Phaser.Scene {
             loop: true,
             volume: 0.05,
         });
+
+        this.ambientMusic = this.sound.add("ambientMusic", {
+            loop: true,
+            volume:0.5,
+        })
     }
 
     update() {
@@ -339,6 +346,7 @@ export default class GameScene extends Phaser.Scene {
             );
         }
         if (this.fighting) {
+            this.ambientMusic.pause();
             if (!this.battleMusic.isPlaying) {
                 this.battleMusic.play();
             }
@@ -347,6 +355,9 @@ export default class GameScene extends Phaser.Scene {
         }
         if (!this.fighting) {
             this.battleMusic.pause();
+            if (!this.ambientMusic.isPlaying) {
+                this.ambientMusic.play();
+            }
             if (this.cursor.left.isDown) {
                 this.wizard?.setVelocityY(0);
                 this.wizard?.setVelocityX(-260);
