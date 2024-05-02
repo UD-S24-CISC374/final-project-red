@@ -30,17 +30,17 @@ export class Npc2Helper {
                 );
                 if (mkDirTut) {
                     dialogue?.setText(
-                        "Check if the new directory was created by listing everything. You learned this earlier!"
+                        "Check if the new directory was created by listing everything.\nYou learned this earlier!"
                     );
                 }
                 if (lsMkTest) {
                     dialogue?.setText(
-                        "There's your new directory Test! Do you remember how to move into directories? Move into Test"
+                        "There's your new directory Test!\nDo you remember how to move into directories? Move into Test"
                     );
                 }
                 if (cdTest) {
                     dialogue?.setText(
-                        "List everything in this directory. You'll see it's empty - I'll show you how to change that!"
+                        "List everything in this directory.\nYou'll see it's empty - I'll show you how to change that!"
                     );
                 }
                 if (lsInTest) {

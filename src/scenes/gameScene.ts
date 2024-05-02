@@ -257,7 +257,7 @@ export default class GameScene extends Phaser.Scene {
         this.evilDialogue.setScrollFactor(0);
 
         this.instructionDialogue = this.add.text(
-            100,
+            70,
             100,
             "Explore the map using the arrow keys\nand interact with NPCs by going near them - good luck!",
             {

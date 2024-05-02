@@ -152,7 +152,7 @@ export class ConsoleHelper {
                 mkDirTut = true; 
             }
             if (text === "$> ls" && curDir === "") {
-                consoleDialogue.setText("Test");
+                consoleDialogue.setText("Home: Test");
                 lsMkTest = true;
             }
             if (text === "$> cd Test") {
