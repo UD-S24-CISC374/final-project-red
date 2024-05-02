@@ -83,6 +83,9 @@ export class ConsoleHelper {
         } else {
             playerHealth.setFrame(this.damage);
             this.damage += 1;
+            if (this.damage === 4) {
+                curDir = "LOST GAME";
+            }
         }
         if (this.knockoutFlag && this.calmFlag) {
             this.hashmap.clear();

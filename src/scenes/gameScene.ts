@@ -286,6 +286,9 @@ export default class GameScene extends Phaser.Scene {
         if (!this.cursor) {
             return;
         }
+        if (this.curDir === "LOST GAME") {
+            this.scene.start("GameOverScene");
+        }
         if (this.playerHealth) {
             this.playerHealth.setPosition(this.wizard!.x, this.wizard!.y - 50);
         }

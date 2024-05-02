@@ -4,7 +4,7 @@ export default class GameOverScene extends Phaser.Scene {
     private backBtn: Phaser.GameObjects.Image;
 
     constructor() {
-        super({ key: "GameOverScene"});
+        super({ key: "GameOverScene" });
     }
 
     create() {
@@ -13,13 +13,13 @@ export default class GameOverScene extends Phaser.Scene {
         this.add.text(400, 280, "Game Over!", {
             fontSize: "85px",
             color: "#fff",
-        })
+        });
 
         this.backBtn = this.add.image(640, 450, "mainBtn");
         this.backBtn.setInteractive();
 
         this.backBtn.on("pointerdown", () => {
-            this.scene.start("StartScene");
-        })
+            window.location.reload();
+        });
     }
 }
