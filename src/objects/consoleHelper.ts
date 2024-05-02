@@ -22,10 +22,13 @@ export class ConsoleHelper {
         consoleDialogue?: Phaser.GameObjects.Text
     ): ShadesInterface => {
         if (!this.hashMapFillFlag) {
-            this.hashmap.set("boss", "boss: shades.txt cartridge arms legs");
-            this.hashmap.set("cartridge", "cartridge: head shell powder");
+            this.hashmap.set("boss", "boss: shades.txt, cartridge, arms, legs");
+            this.hashmap.set("cartridge", "cartridge: head, shell");
             this.hashmap.set("head", "head: emotions");
             this.hashmap.set("emotions", "emotions: ");
+            this.hashmap.set("arms", "arms: left.txt, right.txt: ");
+            this.hashmap.set("legs", "legs: left_leg.txt, right_leg.txt ");
+            this.hashmap.set("shell", "shell: powder.txt, metal.txt");
             this.stack.push("boss");
             this.hashMapFillFlag = true;
             console.log(this.hashmap);
@@ -87,6 +90,18 @@ export class ConsoleHelper {
             consoleDialogue?.setText("Executed knockout.sh!!");
             shadesHealth.setFrame(this.damageDealt);
             this.damageDealt += 1;
+        } else if (curDir === "boss" && text === "$> cd arms") {
+            this.stack.push("arms");
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText("arms: ");
+        } else if (curDir === "boss" && text === "$> cd legs") {
+            this.stack.push("legs");
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText("legs: ");
+        } else if (curDir === "cartridge" && text === "$> cd shell") {
+            this.stack.push("shell");
+            curDir = this.stack[this.stack.length - 1];
+            consoleDialogue?.setText("shell: ");
         } else {
             playerHealth.setFrame(this.damageTaken);
             this.damageTaken += 1;
