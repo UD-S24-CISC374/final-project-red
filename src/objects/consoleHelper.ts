@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { ConsoleHelperInterface } from "../interfaces/consoleHelperInterface";
 import { ShadesInterface } from "../interfaces/shadesInterface";
+import { Level2Interface } from "../interfaces/level2Interface";
 
 export class ConsoleHelper {
     private stack: string[] = [];
@@ -86,6 +87,135 @@ export class ConsoleHelper {
         return { curDir: curDir, won: won3, dialogue: consoleDialogue };
     };
 
+    handleLevel2Console = (
+        curDir: string,
+        won2: boolean,
+        consoleDialogue: Phaser.GameObjects.Text,
+        text: string, 
+        fighting: string,
+        mkDirTut: boolean,
+        lsMkTest: boolean,
+        cdTest: boolean,
+        lsInTest: boolean,
+        lsMyFile: boolean,
+        touchMyFile: boolean,
+        createdFile: boolean,
+    ): Level2Interface => {
+        if (!fighting) {
+            if (text === "$> mkdir Test" && curDir === "") {
+                mkDirTut = true; 
+            }
+            if (text === "$> ls" && curDir === "") {
+                consoleDialogue.setText("Test");
+                lsMkTest = true;
+            }
+            if (text === "$> cd Test") {
+                consoleDialogue.setText("Test:");
+                curDir = "test";
+                cdTest = true;
+            }
+            if (text === "$> ls" && curDir === "test" && !lsMyFile) {
+                consoleDialogue.setText("Test:");
+                lsInTest = true;
+            }
+            if (text === "$> touch myFile.txt") {
+                consoleDialogue.setText("Test:");
+                lsMyFile = true;
+            }
+            if (text === "$> ls" && curDir === "test" && lsMyFile) {
+                consoleDialogue.setText("Test: myFile.txt")
+                touchMyFile = true; 
+            }                
+            if (text === "$> cd rat") { 
+                if (touchMyFile) {
+                    console.log(touchMyFile)
+                }
+             //   fighting = true;
+                curDir = "rat";
+            }
+        } else {
+            if (text === "$> ls" && curDir === "rat") {
+                consoleDialogue.setText(
+                    "Rat: Chores  Core"
+                );
+            }
+            if (text === "$> cd Chores") {
+                curDir = "chores";
+            }
+            if (text === "ls" && curDir === "chores") {
+                consoleDialogue.setText(
+                    "Chores: cleanDishes.sh"
+                );
+            }
+            if (text === "cd .." && curDir === "chores"){
+                consoleDialogue.setText(
+                    "Rat:"
+                );
+            }
+            if (text === "$> cd Core") {
+                consoleDialogue.setText(
+                    "Core:"
+                );
+                curDir = "core-empty"
+            }
+            if (text === "$> ls" && curDir === "core-empty") {
+                consoleDialogue.setText(
+                    "Core: brain.sh"
+                );
+            }
+            if (text === "$> mkdir Off") {
+                consoleDialogue.setText(
+                    "Core: brain.sh"
+                );
+                curDir = "core-off";
+            }
+            if (text === "$> ls" && curDir === "core-off"){
+                consoleDialogue.setText(
+                   "Core: brain.sh  Off" 
+                );
+            }
+            if (text === "$> cd Off") {
+                consoleDialogue.setText(
+                    "Off:" 
+                );
+                curDir = "off-empty";
+            }
+            if (text === "$> ls" && curDir === "off-empty") {
+                consoleDialogue.setText(
+                    "Off:" 
+                );
+            }
+            if (text === "$> touch turnOff.sh" && curDir === "off-empty") {
+                createdFile = true;
+                curDir = "off-touch";
+            }
+            if (text === "$> ls" && curDir === "off-touch") {
+                consoleDialogue.setText(
+                    "Off: turnOff.sh"
+                );
+            }
+            if (text === "$> turnoff.sh") {
+                won2 = true;
+                consoleDialogue.setText(
+                    ""
+                );
+            }
+        }
+        return {
+            curDir,
+            won: won2,
+            dialogue: consoleDialogue,
+            text, 
+            fighting,
+            mkDirTut,
+            lsMkTest,
+            cdTest,
+            lsInTest,
+            lsMyFile,
+            touchMyFile,
+            createdFile,
+        }
+    }
     handleConsoleText = (
         text: string,
         fighting: boolean,
