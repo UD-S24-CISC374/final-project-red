@@ -96,6 +96,8 @@ export default class GameScene extends Phaser.Scene {
     private playerHealth?: Phaser.GameObjects.Sprite;
     private rugWizHealth?: Phaser.GameObjects.Sprite;
     private shadesHealth?: Phaser.GameObjects.Sprite;
+    private ratHealth?: Phaser.GameObjects.Sprite;
+
     private battleMusic: Phaser.Sound.BaseSound;
 
     constructor() {
@@ -296,8 +298,15 @@ export default class GameScene extends Phaser.Scene {
             "hearts",
             0
         );
+        this.ratHealth = this.add.sprite(
+            this.shades!.x,
+            this.shades!.y - 100,
+            "hearts",
+            0
+        );
         this.playerHealth.setScale(1.5);
         this.rugWizHealth.setScale(1.5);
+        this.ratHealth.setScale(1.5);
         this.shadesHealth.setScale(2.0);
 
         this.battleMusic = this.sound.add("battleMusic", {
@@ -482,7 +491,7 @@ export default class GameScene extends Phaser.Scene {
             this.wizard?.setX(950); //figure out
             this.wizard?.setY(1300);
             this.hunter.setX(860);
-            this.hunter.setY(1300);
+            this.hunter.setY(1170);
             this.fighting = true;
             this.curDir = "rat";
             this.consoleHelp.handleLevel2Console(
@@ -532,6 +541,13 @@ export default class GameScene extends Phaser.Scene {
                     this.touchMyFile = this.level2InterfaceObj.touchMyFile;
                     this.createdFile = this.level2InterfaceObj.createdFile;
                     this.consoleDialogue = this.level2InterfaceObj.dialogue;
+                     if (this.won2) {
+                        this.ratHealth?.setFrame(4);
+                        this.fighting = false;
+                        this.curDir = "";
+                        this.fightNumber = 0;
+                        this.door2.setImmovable(false);
+                    }
                     break;
 
                 case 2: 

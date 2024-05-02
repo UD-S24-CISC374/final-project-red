@@ -62,13 +62,14 @@ export class Npc2Helper {
             else {
                 if (!createdFile) {
                     dialogue?.setText(
-                        "Create a directory called core\nInisde Off, create a file called 'turnOff.sh'"
+                        "Create a directory called Core\nInisde Core, create a file called 'turnOff.sh'"
                     );
                 }
                 if (createdFile) {
                     dialogue?.setText(
-                        "Nice! Now just type turnOff.sh to defeat the Rat King!"
+                        "Nice! Now just type ls to see your file, then type turnOff.sh to defeat the Rat King!"
                     );
+                    won = true;
             }
         }
     } 

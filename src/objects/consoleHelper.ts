@@ -146,9 +146,9 @@ export class ConsoleHelper {
                 consoleDialogue.setText(
                     "Rat: "
                 );
-                curDir = "rat";
+                curDir = "rat-core";
             }
-            if (text === "$> ls" && curDir === "rat"){
+            if (text === "$> ls" && curDir === "rat-core"){
                 consoleDialogue.setText(
                    "Rat: Core" 
                 );
