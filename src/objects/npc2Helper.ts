@@ -62,7 +62,7 @@ export class Npc2Helper {
             else {
                 if (!createdFile) {
                     dialogue?.setText(
-                        "Find a directory called 'Core', then create a directory called 'Off'\nInisde Off, create a file called 'turnOff.sh'"
+                        "Create a directory called core\nInisde Off, create a file called 'turnOff.sh'"
                     );
                 }
                 if (createdFile) {
