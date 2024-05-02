@@ -136,7 +136,7 @@ export class ConsoleHelper {
         curDir: string,
         won2: boolean,
         consoleDialogue: Phaser.GameObjects.Text,
-        text: string, 
+        text: string,
         fighting: boolean,
         mkDirTut: boolean,
         lsMkTest: boolean,
@@ -144,92 +144,89 @@ export class ConsoleHelper {
         lsInTest: boolean,
         lsMyFile: boolean,
         touchMyFile: boolean,
-        createdFile: boolean,
+        createdFile: boolean
     ): Level2Interface => {
         if (!fighting) {
-            if (text === "$> mkdir Test" && curDir === "") {
-                consoleDialogue.setText("Home: ");
-                mkDirTut = true; 
-            }
-            if (text === "$> ls" && curDir === "") {
-                consoleDialogue.setText("Test");
-                lsMkTest = true;
-            }
-            if (text === "$> cd Test") {
-                consoleDialogue.setText("Test:");
-                curDir = "test";
-                cdTest = true;
-            }
-            if (text === "$> ls" && curDir === "test" && !lsMyFile) {
-                consoleDialogue.setText("Test:");
-                lsInTest = true;
-            }
-            if (text === "$> touch myFile.txt") {
-                consoleDialogue.setText("Test:");
-                lsMyFile = true;
-            }
-            if (text === "$> ls" && curDir === "test" && lsMyFile) {
-                consoleDialogue.setText("Test: myFile.txt")
-                touchMyFile = true; 
-            }                
-            if (text === "$> cd rat") { 
-                if (touchMyFile) {
-                    console.log(touchMyFile)
+            if (curDir === "") {
+                if (text === "$> ls") {
+                    curDir = "home";
+                    consoleDialogue.setText("Home: ");
                 }
-             //   fighting = true;
+            } else if (curDir === "home") {
+                if (text === "$> mkdir Test") {
+                    consoleDialogue.setText("Home: ");
+                    mkDirTut = true;
+                }
+                if (text === "$> ls" && !mkDirTut) {
+                    consoleDialogue.setText("Home: ");
+                }
+                if (text === "$> ls" && mkDirTut) {
+                    consoleDialogue.setText(" Home: Test");
+                    lsMkTest = true;
+                }
+                if (text === "$> cd Test" && mkDirTut) {
+                    consoleDialogue.setText("Test:");
+                    curDir = "test";
+                    cdTest = true;
+                }
+            } else if (curDir === "test") {
+                if (text === "$> ls" && !lsMyFile) {
+                    consoleDialogue.setText("Test:");
+                    lsInTest = true;
+                }
+                if (text === "$> touch myFile.txt") {
+                    consoleDialogue.setText("Test:");
+                    lsMyFile = true;
+                }
+                if (text === "$> ls" && lsMyFile) {
+                    consoleDialogue.setText("Test: myFile.txt");
+                    touchMyFile = true;
+                }
+            }
+            if (text === "$> cd rat") {
+                if (touchMyFile) {
+                    console.log(touchMyFile);
+                }
+                //   fighting = true;
                 curDir = "rat";
             }
         } else {
             console.log(curDir);
             console.log(consoleDialogue);
             if (text === "$> ls" && curDir === "rat") {
-                consoleDialogue.setText(
-                    "Rat: "
-                );
+                consoleDialogue.setText("Rat: ");
             }
             if (text === "$> mkdir Core") {
-                consoleDialogue.setText(
-                    "Rat: "
-                );
+                consoleDialogue.setText("Rat: ");
                 curDir = "rat-core";
             }
-            if (text === "$> ls" && curDir === "rat-core"){
-                consoleDialogue.setText(
-                   "Rat: Core" 
-                );
+            if (text === "$> ls" && curDir === "rat-core") {
+                consoleDialogue.setText("Rat: Core");
             }
             if (text === "$> cd Core") {
-                consoleDialogue.setText(
-                    "Core:" 
-                );
+                consoleDialogue.setText("Core:");
                 curDir = "core";
             }
             if (text === "$> ls" && curDir === "core") {
-                consoleDialogue.setText(
-                    "Core:" 
-                );
+                consoleDialogue.setText("Core:");
             }
             if (text === "$> touch turnOff.sh" && curDir === "core") {
                 createdFile = true;
                 curDir = "core";
             }
             if (text === "$> ls" && curDir === "core" && createdFile) {
-                consoleDialogue.setText(
-                    "Core: turnOff.sh"
-                );
+                consoleDialogue.setText("Core: turnOff.sh");
             }
-            if (text === "$> turnOff.sh") {
+            if (text === "$> ./turnOff.sh") {
                 won2 = true;
-                consoleDialogue.setText(
-                    ""
-                );
+                consoleDialogue.setText("");
             }
         }
         return {
             curDir,
             won: won2,
             dialogue: consoleDialogue,
-            text, 
+            text,
             fighting,
             mkDirTut,
             lsMkTest,
@@ -238,8 +235,8 @@ export class ConsoleHelper {
             lsMyFile,
             touchMyFile,
             createdFile,
-        }
-    }
+        };
+    };
     handleConsoleText = (
         text: string,
         fighting: boolean,
@@ -316,6 +313,7 @@ export class ConsoleHelper {
                 }
                 if (text === "$> selfDestruct.sh") {
                     won = true;
+                    curDir = "";
                     consoleDialogue?.setText("");
                 }
             }

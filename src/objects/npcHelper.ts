@@ -41,7 +41,7 @@ export class NpcHelper {
                 }
                 if (cdBackTut) {
                     dialogue?.setText(
-                        "Great - we'll learn more later!\nYou are ready to take on your first enemy! Type 'cd enemy'"
+                        "Great - we'll learn more later!\nYou are ready to take on your first enemy!\nFair warning, any typos during combat will cause damage\nType 'cd enemy'"
                     );
                 }
             }
@@ -60,7 +60,7 @@ export class NpcHelper {
             }
         } else {
             dialogue?.setText(
-                "You beat the evil mage! Now you can explore past him!"
+                "You beat the evil mage! Now you can explore past him!\nTry pushing that door now."
             );
             curDir = "";
             fighting = false;
