@@ -92,7 +92,7 @@ export class ConsoleHelper {
         won2: boolean,
         consoleDialogue: Phaser.GameObjects.Text,
         text: string, 
-        fighting: string,
+        fighting: boolean,
         mkDirTut: boolean,
         lsMkTest: boolean,
         cdTest: boolean,
@@ -103,6 +103,7 @@ export class ConsoleHelper {
     ): Level2Interface => {
         if (!fighting) {
             if (text === "$> mkdir Test" && curDir === "") {
+                consoleDialogue.setText("Home: ");
                 mkDirTut = true; 
             }
             if (text === "$> ls" && curDir === "") {
@@ -134,6 +135,8 @@ export class ConsoleHelper {
                 curDir = "rat";
             }
         } else {
+            console.log(curDir);
+            console.log(consoleDialogue);
             if (text === "$> ls" && curDir === "rat") {
                 consoleDialogue.setText(
                     "Rat: Chores  Core"
@@ -141,16 +144,18 @@ export class ConsoleHelper {
             }
             if (text === "$> cd Chores") {
                 curDir = "chores";
+                consoleDialogue.setText("Chores: ")
             }
-            if (text === "ls" && curDir === "chores") {
+            if (text === "$> ls" && curDir === "chores") {
                 consoleDialogue.setText(
                     "Chores: cleanDishes.sh"
                 );
             }
-            if (text === "cd .." && curDir === "chores"){
+            if (text === "$> cd .." && curDir === "chores"){
                 consoleDialogue.setText(
                     "Rat:"
                 );
+                curDir = "rat";
             }
             if (text === "$> cd Core") {
                 consoleDialogue.setText(
@@ -194,7 +199,7 @@ export class ConsoleHelper {
                     "Off: turnOff.sh"
                 );
             }
-            if (text === "$> turnoff.sh") {
+            if (text === "$> turnOff.sh") {
                 won2 = true;
                 consoleDialogue.setText(
                     ""
