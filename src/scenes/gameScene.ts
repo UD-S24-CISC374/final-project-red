@@ -137,7 +137,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.door2 = this.physics.add.image(850, 960, "door").setScale(0.2);
         this.door3 = this.physics.add.image(1650, 2045, "door").setScale(0.2);
-        this.wizard = this.physics.add.sprite(220, 375, "wizard");
+        this.wizard = this.physics.add.sprite(220, 375, "wizard").setScale(0.9);
         const camera = this.cameras.main;
         camera.startFollow(this.wizard);
         this.wizard.setCollideWorldBounds(true);
@@ -513,6 +513,7 @@ export default class GameScene extends Phaser.Scene {
             this.hunter.setY(1300);
             this.fighting = true;
             this.curDir = "rat";
+            this.consoleDialogue?.setText("");
             this.consoleHelp.handleLevel2Console(
                 this.curDir!,
                 this.won2,

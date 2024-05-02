@@ -40,7 +40,7 @@ export class Npc2Helper {
                 }
                 if (cdTest) {
                     dialogue?.setText(
-                        "List everything in this directory. You'll see it's empty - I'll show you how to change that!"
+                        "List everything in this directory. You'll see it's empty - \nI'll show you how to change that!"
                     );
                 }
                 if (lsInTest) {
@@ -59,7 +59,7 @@ export class Npc2Helper {
             } else {
                 if (!createdFile) {
                     dialogue?.setText(
-                        "Create a directory called Core\nInisde Core, create a file called 'turnOff.sh'"
+                        "Your task: Create a directory called Core\nInisde Core, create a file called 'turnOff.sh'"
                     );
                 }
                 if (createdFile) {

@@ -162,7 +162,7 @@ export class ConsoleHelper {
                     consoleDialogue.setText("Home: ");
                 }
                 if (text === "$> ls" && mkDirTut) {
-                    consoleDialogue.setText(" Home: Test");
+                    consoleDialogue.setText("Home: Test");
                     lsMkTest = true;
                 }
                 if (text === "$> cd Test" && mkDirTut) {
@@ -215,7 +215,7 @@ export class ConsoleHelper {
             } else if (text === "cd .." && curDir === "core") {
                 curDir = "rate-core";
                 consoleDialogue.setText("Rat: Core");
-            } else {
+            } else if (text !== "$> cd rat") {
                 playerHealth.setFrame(this.damageTaken);
                 this.damageTaken += 1;
             }
@@ -275,7 +275,7 @@ export class ConsoleHelper {
                 // enemy home directory
                 if (text === "$> ls") {
                     consoleDialogue?.setText(
-                        "Enemy: evilStuff  evilThings evil.txt"
+                        "Enemy: evilStuff,  evilThings, evil.txt"
                     );
                 } else if (text === "$> cd evilStuff") {
                     curDir = "evilStuff";
@@ -299,20 +299,20 @@ export class ConsoleHelper {
                 }
             } else if (curDir === "evilThings") {
                 if (text === "$> ls") {
-                    consoleDialogue?.setText("evilThings: doNotLook");
-                } else if (text === "$> cd doNotLook") {
+                    consoleDialogue?.setText("evilThings: maybeHere");
+                } else if (text === "$> cd maybeHere") {
                     curDir = "doNotLook";
-                    consoleDialogue?.setText("doNotLook:");
+                    consoleDialogue?.setText("maybeHere:");
                 } else if (text === "$> cd ..") {
                     curDir = "enemy";
-                    consoleDialogue?.setText("enemy:");
+                    consoleDialogue?.setText("Enemy:");
                 } else {
                     playerHealth.setFrame(this.damageTaken);
                     this.damageTaken += 1;
                 }
             } else if (curDir === "doNotLook") {
                 if (text === "$> ls") {
-                    consoleDialogue?.setText("doNotLook: selfDestruct.sh");
+                    consoleDialogue?.setText("maybeHere: selfDestruct.sh");
                     foundFile = true;
                 } else if (text === "$> ./selfDestruct.sh") {
                     this.damageTaken = 1;
