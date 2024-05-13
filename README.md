@@ -21,19 +21,17 @@ Use arrow keys to move your player around and type commands using your keyboard.
 
 # Screenshot
 
-TEXT GOES HERE
+![large screenshot](assets/large.png)
 
 # Gameplay Video
-
 TEXT GOES HERE
 
 # Educational Game Design Document
 
-Link to our [egdd](Educational Game Design Document)
+Link to our [egdd](https://ud-s24-cisc374.github.io/final-project-red/docs/egdd.html)
 
 # Credits
-* Start Background by YUCALORA
-* Hearts by SwooshWhoosh on itch.io
-* Battle Music - "Retro Platforming" by David Fesliyan
-(https://www.fesliyanstudios.com/royalty-free-music/download/retro-platforming/454)
-* Background Music - "8 Bit Nostalgia" by David Fesliyan (https://www.fesliyanstudios.com/royalty-free-music/download/8-bit-nostalgia/2289)
+* Start Background - [YUCALORA on Shutterstock](https://www.shutterstock.com/image-vector/dark-dungeon-long-medieval-castle-corridor-2118070751)
+* Hearts - [SwooshWhoosh on itch.io](https://swooshwhoosh.itch.io/heartsui)
+* Battle Music - ["Retro Platforming" by David Fesliyan](https://www.fesliyanstudios.com/royalty-free-music/download/retro-platforming/454)
+* Background Music - ["8 Bit Nostalgia" by David Fesliyan](https://www.fesliyanstudios.com/royalty-free-music/download/8-bit-nostalgia/2289)

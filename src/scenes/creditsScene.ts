@@ -20,7 +20,7 @@ export default class CreditsScene extends Phaser.Scene {
             color: "#1c112f"
         });
 
-        this.add.text(330, 250, "Start Background by YUCALORA\nBattle Music - \"Retro Platforming\" by David Fesliyan\nHearts by SwooshWhoosh on itch.io", {
+        this.add.text(330, 250, "Start Background by YUCALORA\nBattle Music - \"Retro Platforming\" by David Fesliyan\nHearts by SwooshWhoosh on itch.io\nBackground Music - \"8 Bit Nostalgia\" by David Fesliyan", {
             fontSize: "20px",
             color: "#1c112f"
         });

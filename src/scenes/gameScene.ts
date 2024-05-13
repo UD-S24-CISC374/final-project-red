@@ -325,7 +325,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.ambientMusic = this.sound.add("ambientMusic", {
             loop: true,
-            volume:0.5,
+            volume:0.05,
         })
     }
 
