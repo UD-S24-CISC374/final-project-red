@@ -1,7 +1,7 @@
 # Bash the Dungeon
 
 ## Elevator Pitch
-*Bash the Dungeon is a top-down adventure game where players, explore a dungeon, encountering NPCs, chests, and enemies as they learn Bash commands and grow their collection of spells*
+*Bash the Dungeon is a top-down adventure game where players, explore a dungeon, encountering NPCs and enemies as they learn Bash commands and grow their collection of spells*
 
 ## Influences (Brief)
 
@@ -20,7 +20,7 @@
 *Give a very high-level description of any core gameplay mechanics*
 
 - *Gameplay Mechanic #1* Players can freely move around the world with keyboard arrow/wasd movement. 
-- *Gameplay Mechanic #2* Interactions with the world will involve bash commands, this includes doing things such as “CD” into chests or NPC’s in order to interact with them. 
+- *Gameplay Mechanic #2* Interactions with the world will involve bash commands, this includes doing things such as “CD” into NPC’s in order to interact with them. 
 - *Gameplay Mechanic #3* Combat will be turned based and each monster will teach the player how to incorporate bash commands they learned in order to defeat them. Failure to write the proper commands will result in damage taken. 
 - *Gameplay Mechanic #4* Levels each teach a specific set of commands as the players navigate and interact with NPC’s and chests to learn more. Each level culminates in a Boss Battle in a battle that encompasses commands they’ve learned so far.
 -*Gameplay Mechanic #5* Spells: Players can find and utilize spells to combat enemies. Spells will be cast based on the commands players enter.  
@@ -94,7 +94,7 @@
 
 # Procedures/Actions
 
-*Users can use arrow keys to move around and click on NPCs and objects to interact with them. Users will also use their keyboard to type Bash commands during combat and puzzles.*
+*Users can use arrow keys to move around and move near NPCs jects to interact with them. Users will also use their keyboard to type Bash commands during combat and puzzles.*
 
 # Rules
 
@@ -117,18 +117,17 @@ Spells that fly across the screen
 - *Movement*: Players while not in combat will be able to traverse rooms using the WASD and arrow keys in a free roam style. While in combat there will not be any movement. 
 - *Interaction*: As they move, players will be able to interact with the world by clicking on NPCs and objects. When clicking on NPCs, dialogue will appear as the NPCs explain new commands. Players will be able to also interact with game objects such as chests, which they can treat similarly to filesystems, and be able to CD through them to access files. 
 - *Combat*: *In combat, players will have a text entry field where they will be able to enter Bash commands. After each correct command, a spell will shoot across the screen and damage the boss. Incorrect commands will lead to damage being taken from the boss.*
-- *Core Gameplay Mechanic #4*: Levels each teach a specific set of commands as the players navigate and interact with NPC’s and chests to learn more. For example, in one level the player might need to get coles to an NPC and initiate a talking sequence that will teach about the CP command. Chests will unlock new spells to be able to use against the enemies. Each level culminates in a Boss Battle in a battle that encompasses commands they’ve learned so far. So if a level talks about the commands CP, CD, LS then the boss will incorporate all those commands in order to complete the fight.
+- *Core Gameplay Mechanic #4*: Levels each teach a specific set of commands as the players navigate and interact with NPC’s and chests to learn more. For example, in one level the player might need to get close to an NPC and initiate a talking sequence that will teach about the CP command. Chests will unlock new spells to be able to use against the enemies. Each level culminates in a Boss Battle in a battle that encompasses commands they’ve learned so far. So if a level talks about the commands CP, CD, LS then the boss will incorporate all those commands in order to complete the fight.
 *Core Gameplay Mechanic #5* Spells: Players can find and utilize spells to combat enemies. Spells will be cast based on the commands players enter. Player can find new spells as the game goes on via chests and something to note is that spells are just purely cosmetic as they don’t actually change how much damage you do but just adds to the dynamic of the game.
 
 
     
 ## Feedback
 
-Failing a bash commands results in a lose of health that will be displayed to the player
+Failing a bash commands results in a loss of health that will be displayed to the player
 Successfully executing a bash command will result in a loss of health to the enemy that will be displayed to the player. 
 Beating levels will result in new harder levels that will be different
-There will be high score text showcasing what is the farthest in the game the player has achieved.
-Every end game screen will display text and images showcasing the enemies and levels they have completed
+
 # Story and Gameplay
 
 ## Presentation of Rules
