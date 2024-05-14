@@ -11,8 +11,10 @@ export class ConsoleHelper {
     private knockoutFlag: boolean = false;
     private damageTaken: number = 1;
     private damageDealt: number = 1;
+    // private damageSfx: Phaser.Sound.BaseSound;
 
-    constructor() {}
+    constructor() {
+    }
 
     handleShadesBoss = (
         text: string,
@@ -57,6 +59,7 @@ export class ConsoleHelper {
             consoleDialogue?.setText(this.hashmap.get("head")!);
             shadesHealth.setFrame(this.damageDealt);
             this.damageDealt += 1;
+
         } else if (
             curDir === "head" &&
             text === "$> cd mental" &&
