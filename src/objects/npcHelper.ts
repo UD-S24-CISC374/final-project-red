@@ -36,7 +36,7 @@ export class NpcHelper {
                 }
                 if (cdLsTut) {
                     dialogue?.setText(
-                        "Nice, here's everything inside the aboutMe folder.\nTo go back to the previous directory, do 'cd ..'"
+                        "Nice, here's everything inside the aboutMe directory. Remember, you can only \ncd into directories, not files! To go back to the previous directory, do 'cd ..'"
                     );
                 }
                 if (cdBackTut) {
