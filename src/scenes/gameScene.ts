@@ -106,6 +106,7 @@ export default class GameScene extends Phaser.Scene {
 
     private battleMusic: Phaser.Sound.BaseSound;
     private ambientMusic: Phaser.Sound.BaseSound;
+    private gameoverSfx: Phaser.Sound.BaseSound;
 
     constructor() {
         super({ key: "GameScene" });
@@ -327,6 +328,11 @@ export default class GameScene extends Phaser.Scene {
             loop: true,
             volume:0.08,
         })
+
+        this.gameoverSfx = this.sound.add("gameoverSfx", {
+            loop: false,
+            volume: 0.5,
+        })
     }
 
     update() {
@@ -334,6 +340,8 @@ export default class GameScene extends Phaser.Scene {
             return;
         }
         if (this.curDir === "LOST GAME") {
+            this.battleMusic.pause();
+            this.gameoverSfx.play();
             this.scene.start("GameOverScene");
         }
         if (this.playerHealth) {
