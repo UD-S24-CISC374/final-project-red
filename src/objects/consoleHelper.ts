@@ -13,8 +13,7 @@ export class ConsoleHelper {
     private damageDealt: number = 1;
     // private damageSfx: Phaser.Sound.BaseSound;
 
-    constructor() {
-    }
+    constructor() {}
 
     handleShadesBoss = (
         text: string,
