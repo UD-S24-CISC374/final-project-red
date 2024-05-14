@@ -21,7 +21,7 @@ export class ConsoleHelper {
         playerHealth: Phaser.GameObjects.Sprite,
         shadesHealth: Phaser.GameObjects.Sprite,
         consoleDialogue?: Phaser.GameObjects.Text
-    ): ShadesInterface => {
+    ): ShadesInterface => {     
         if (!this.hashMapFillFlag) {
             this.hashmap.set("boss", "boss: shades.txt, cartridge, arms, legs");
             this.hashmap.set("cartridge", "cartridge: head, shell");

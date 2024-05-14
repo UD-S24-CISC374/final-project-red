@@ -14,6 +14,8 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image("rugged_wizard", "assets/rugged_wizard.png");
         this.load.audio("battleMusic", "assets/battle.mp3");
         this.load.audio("ambientMusic", "assets/ambient.mp3");
+        this.load.audio("overMusic", "assets/gameover.mp3");
+        this.load.audio("damageSfx", "assets/damage.mp3");
         this.load.image("door", "assets/door.png");
         this.load.image("tiles", "assets/dungeon_tiles_v4.png");
         this.load.image("resourceful_rat", "assets/resourceful_rat.png");
@@ -40,6 +42,7 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.image("creditsBackground", "assets/creditsBkd.png");
         this.load.image("backBtn", "assets/backBtn.png");
         this.load.image("mainBtn", "assets/mainBtn.png");
+        this.load.image("helpBtn", "assets/helpBtn.png");
         
     }
 
