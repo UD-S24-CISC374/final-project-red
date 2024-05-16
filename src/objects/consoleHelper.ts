@@ -11,8 +11,11 @@ export class ConsoleHelper {
     private knockoutFlag: boolean = false;
     private damageTaken: number = 1;
     private damageDealt: number = 1;
+    private damageSfx: Phaser.Sound.BaseSound;
 
-    constructor() {}
+    constructor(private scene: Phaser.Scene) {
+        this.damageSfx = scene.sound.add('damageSfx');
+    }
 
     handleShadesBoss = (
         text: string,
@@ -57,6 +60,7 @@ export class ConsoleHelper {
             consoleDialogue?.setText(this.hashmap.get("head")!);
             shadesHealth.setFrame(this.damageDealt);
             this.damageDealt += 1;
+            this.damageSfx.play();
         } else if (
             curDir === "head" &&
             text === "$> cd mental" &&
@@ -81,6 +85,7 @@ export class ConsoleHelper {
             this.calmFlag = true;
             shadesHealth.setFrame(this.damageDealt);
             this.damageDealt += 1;
+            this.damageSfx.play();
             consoleDialogue?.setText("Executed calm.sh!");
         } else if (
             curDir === "mental" &&
@@ -91,6 +96,7 @@ export class ConsoleHelper {
             consoleDialogue?.setText("Executed knockout.sh!!");
             shadesHealth.setFrame(this.damageDealt);
             this.damageDealt += 1;
+            this.damageSfx.play();
         } else if (curDir === "boss" && text === "$> cd arms") {
             this.stack.push("arms");
             curDir = this.stack[this.stack.length - 1];
@@ -106,6 +112,7 @@ export class ConsoleHelper {
         } else {
             playerHealth.setFrame(this.damageTaken);
             this.damageTaken += 1;
+            this.damageSfx.play();
             if (this.damageTaken === 4) {
                 curDir = "LOST GAME";
             }
@@ -218,6 +225,7 @@ export class ConsoleHelper {
             } else if (text !== "$> cd rat") {
                 playerHealth.setFrame(this.damageTaken);
                 this.damageTaken += 1;
+                this.damageSfx.play();
             }
             if (this.damageTaken === 4) {
                 curDir = "LOST GAME";
@@ -286,6 +294,7 @@ export class ConsoleHelper {
                 } else {
                     playerHealth.setFrame(this.damageTaken);
                     this.damageTaken += 1;
+                    this.damageSfx.play();
                 }
             } else if (curDir === "evilStuff") {
                 if (text === "$> ls") {
@@ -296,6 +305,7 @@ export class ConsoleHelper {
                 } else {
                     playerHealth.setFrame(this.damageTaken);
                     this.damageTaken += 1;
+                    this.damageSfx.play();
                 }
             } else if (curDir === "evilThings") {
                 if (text === "$> ls") {
@@ -309,6 +319,7 @@ export class ConsoleHelper {
                 } else {
                     playerHealth.setFrame(this.damageTaken);
                     this.damageTaken += 1;
+                    this.damageSfx.play();
                 }
             } else if (curDir === "doNotLook") {
                 if (text === "$> ls") {
@@ -322,10 +333,12 @@ export class ConsoleHelper {
                 } else {
                     playerHealth.setFrame(this.damageTaken);
                     this.damageTaken += 1;
+                    this.damageSfx.play();
                 }
             } else {
                 playerHealth.setFrame(this.damageTaken);
                 this.damageTaken += 1;
+                this.damageSfx.play();
             }
         }
         if (this.damageTaken === 4) {
