@@ -612,6 +612,9 @@ export default class GameScene extends Phaser.Scene {
                         this.consoleDialogue?.setText("");
                         this.fightNumber = 0;
                         this.door3.setImmovable(false);
+                        this.battleMusic.pause();
+                        this.ambientMusic.pause();
+                        this.scene.start("GameOverScene");
                     }
                     break;
                 default:
