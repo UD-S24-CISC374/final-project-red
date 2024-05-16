@@ -343,7 +343,7 @@ export default class GameScene extends Phaser.Scene {
         if (this.curDir === "LOST GAME") {
             this.battleMusic.pause();
             this.gameoverSfx.play();
-            this.scene.start("GameOverScene");
+            this.scene.start("GameOverScene", {won: false});
         }
         if (this.playerHealth) {
             this.playerHealth.setPosition(this.wizard!.x, this.wizard!.y - 50);
@@ -481,7 +481,7 @@ export default class GameScene extends Phaser.Scene {
                     }
                 } else {
                     const tmp: string =
-                        "Your task: enter his emotions directory, create and call a calm.sh file\nIn his head directory make a 'mental' directory,\nenter it then create and call a knockout.sh file";
+                        "Your task: Find and enter his emotions directory, then create and call a calm.sh file\nThen, in his head directory make a 'mental' directory, enter it,\nthen create and call a knockout.sh file";
                     this.smileyDialogue.setText(tmp);
                 }
             } else {
@@ -612,6 +612,9 @@ export default class GameScene extends Phaser.Scene {
                         this.consoleDialogue?.setText("");
                         this.fightNumber = 0;
                         this.door3.setImmovable(false);
+                        this.battleMusic.pause();
+                        this.ambientMusic.pause();
+                        this.scene.start("GameOverScene", {won: true});
                     }
                     break;
                 default:
