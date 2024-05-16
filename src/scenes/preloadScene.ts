@@ -15,6 +15,8 @@ export default class PreloadScene extends Phaser.Scene {
         this.load.audio("battleMusic", "assets/battle.mp3");
         this.load.audio("ambientMusic", "assets/ambient.mp3");
         this.load.audio("gameoverSfx", "assets/gameover.mp3");
+        this.load.audio("damageSfx", "assets/damage.mp3");
+        this.load.audio("victorySfx", "assets/victory.mp3");
         this.load.image("door", "assets/door.png");
         this.load.image("tiles", "assets/dungeon_tiles_v4.png");
         this.load.image("resourceful_rat", "assets/resourceful_rat.png");

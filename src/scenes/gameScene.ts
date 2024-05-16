@@ -107,6 +107,7 @@ export default class GameScene extends Phaser.Scene {
     private battleMusic: Phaser.Sound.BaseSound;
     private ambientMusic: Phaser.Sound.BaseSound;
     private gameoverSfx: Phaser.Sound.BaseSound;
+    private damageSfx: Phaser.Sound.BaseSound;
 
     constructor() {
         super({ key: "GameScene" });
@@ -116,7 +117,7 @@ export default class GameScene extends Phaser.Scene {
     create() {
         //CLASSES --------
         this.handleNPC = new NpcHelper();
-        this.consoleHelp = new ConsoleHelper();
+        this.consoleHelp = new ConsoleHelper(this);
         this.handleNPC2 = new Npc2Helper();
 
         //MAP -------
