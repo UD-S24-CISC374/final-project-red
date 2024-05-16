@@ -12,9 +12,11 @@ export class ConsoleHelper {
     private damageTaken: number = 1;
     private damageDealt: number = 1;
     private damageSfx: Phaser.Sound.BaseSound;
+    private victorySfx: Phaser.Sound.BaseSound;
 
     constructor(private scene: Phaser.Scene) {
         this.damageSfx = scene.sound.add('damageSfx');
+        this.victorySfx = scene.sound.add('victorySfx', {volume: 0.4});
     }
 
     handleShadesBoss = (
@@ -122,6 +124,7 @@ export class ConsoleHelper {
             this.stack = [];
             //this.damageTaken = 1;
             this.damageDealt = 1;
+            this.victorySfx.play();
             return {
                 curDir: curDir,
                 won: true,
@@ -218,6 +221,7 @@ export class ConsoleHelper {
                 consoleDialogue.setText("Core: turnOff.sh");
             } else if (text === "$> ./turnOff.sh") {
                 won2 = true;
+                this.victorySfx.play();
                 consoleDialogue.setText("");
             } else if (text === "cd .." && curDir === "core") {
                 curDir = "rate-core";
@@ -326,6 +330,7 @@ export class ConsoleHelper {
                     consoleDialogue?.setText("maybeHere: selfDestruct.sh");
                     foundFile = true;
                 } else if (text === "$> ./selfDestruct.sh") {
+                    this.victorySfx.play();
                     this.damageTaken = 1;
                     won = true;
                     curDir = "";
