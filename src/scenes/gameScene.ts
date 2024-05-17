@@ -481,7 +481,7 @@ export default class GameScene extends Phaser.Scene {
                     }
                 } else {
                     const tmp: string =
-                        "Your task: Find and enter his emotions directory, then create and call a calm.sh file\nThen, in his head directory make a 'mental' directory, enter it,\nthen create and call a knockout.sh file";
+                        "Your task: Find and enter his emotions directory, then create and call a calm.sh\nfile. Then, in his head directory make a 'mental' directory, enter it,\nthen create and call a knockout.sh file";
                     this.smileyDialogue.setText(tmp);
                 }
             } else {
