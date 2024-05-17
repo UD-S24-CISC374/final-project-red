@@ -4,7 +4,7 @@ export default class CreditsScene extends Phaser.Scene {
     private backBtn: Phaser.GameObjects.Image;
 
     constructor() {
-        super({key: "CreditsScene"})
+        super({ key: "CreditsScene" });
     }
 
     create() {
@@ -12,18 +12,46 @@ export default class CreditsScene extends Phaser.Scene {
 
         this.add.text(480, 99, "Credits", {
             fontSize: "85px",
-            color: "#1c112f"
-        })
-
-        this.add.text(330, 200, "Created by Ryan Sanchez and Chrstian Rullan Crsipo", {
-            fontSize: "20px",
-            color: "#1c112f"
+            color: "#1c112f",
         });
 
-        this.add.text(330, 250, "Start Background by YUCALORA\nBattle Music - \"Retro Platforming\" by David Fesliyan\nHearts by SwooshWhoosh on itch.io\nBackground Music - \"8 Bit Nostalgia\" by David Fesliyan", {
-            fontSize: "20px",
-            color: "#1c112f"
-        });
+        this.add.text(
+            330,
+            200,
+            "Created by Ryan Sanchez and Chrstian Rullan Crespo",
+            {
+                fontSize: "20px",
+                color: "#1c112f",
+            }
+        );
+
+        this.add.text(
+            330,
+            250,
+            'Start Background by YUCALORA\nBattle Music - "Retro Platforming" by David Fesliyan\nHearts by SwooshWhoosh on itch.io\nBackground Music - "8 Bit Nostalgia" by David Fesliyan',
+            {
+                fontSize: "20px",
+                color: "#1c112f",
+            }
+        );
+        this.add.text(
+            330,
+            340,
+            "Tileset - Dungeon Tileset by Buch. \nhttps://opengameart.org/content/dungeon-tileset",
+            {
+                fontSize: "20px",
+                color: "#1c112f",
+            }
+        );
+        this.add.text(
+            330,
+            390,
+            "Character assets - Enter the Gungeon. \nhttps://www.spriters-resource.com/pc_computer/enterthegungeon/",
+            {
+                fontSize: "20px",
+                color: "#1c112f",
+            }
+        );
 
         this.backBtn = this.add.image(640, 655, "backBtn");
         this.backBtn.setScale(0.8);
@@ -31,8 +59,6 @@ export default class CreditsScene extends Phaser.Scene {
 
         this.backBtn.on("pointerdown", () => {
             this.scene.start("StartScene");
-        })
-
-
+        });
     }
 }
