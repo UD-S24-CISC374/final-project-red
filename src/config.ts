@@ -1,15 +1,18 @@
 import Phaser from "phaser";
-import MainScene from "./scenes/mainScene";
+import MainScene from "./scenes/startScene";
 import PreloadScene from "./scenes/preloadScene";
+import GameScene from "./scenes/gameScene";
+import CreditsScene from "./scenes/creditsScene";
+import GameOverScene from "./scenes/gameoverScene";
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 
 export const CONFIG = {
-    title: "My Untitled Phaser 3 Game",
+    title: "Bash",
     version: "0.0.1",
     type: Phaser.AUTO,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#000000",
     scale: {
         parent: "phaser-game",
         mode: Phaser.Scale.FIT,
@@ -17,12 +20,11 @@ export const CONFIG = {
         width: DEFAULT_WIDTH,
         height: DEFAULT_HEIGHT,
     },
-    scene: [PreloadScene, MainScene],
+    scene: [PreloadScene, MainScene, GameScene, CreditsScene, GameOverScene],
     physics: {
         default: "arcade",
         arcade: {
             debug: false,
-            gravity: { y: 300 },
         },
     },
     input: {
